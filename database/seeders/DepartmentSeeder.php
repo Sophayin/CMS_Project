@@ -218,11 +218,11 @@ class DepartmentSeeder extends Seeder
                 'icon' => '<svg viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M17.41 5.91L12.58 1.08C12.21 0.71 11.7 0.5 11.17 0.5H2C0.9 0.5 0 1.4 0 2.5V16.5C0 17.6 0.9 18.5 2 18.5H16C17.1 18.5 18 17.6 18 16.5V7.33C18 6.8 17.79 6.29 17.41 5.91ZM4 4.5H11V6.5H4V4.5ZM14 14.5H4V12.5H14V14.5ZM14 10.5H4V8.5H14V10.5Z" fill="currentColor"/>
                         </svg>',
-                'actions' => ['Agency Report', 'Finance Report'],
+                'actions' => ['Sale Summary Report by Company', 'Sale Performance by Channel', 'Sale Summary by Channel', 'Summary of shop Performance'],
                 'children' => [
                     [
                         'name' => 'Sale Summary Report by Company',
-                        'slug' => '/report/agency',
+                        'slug' => '/report/sale-summary-by-comapny',
                         'type'  => 'menu',
                         'language' => ['lang' => 'kh', 'name' => "របាយការណ៍ភា្នក់ងារប្រឹក្សា"],
                         'description' => 'agency payroll by monthly and commission fee ',
@@ -230,19 +230,43 @@ class DepartmentSeeder extends Seeder
                         'icon' => '<svg width="15" height="15" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M17.0663 12.0369C17.432 12.0644 17.7057 12.384 17.6782 12.7498L17.51 14.9715C17.3709 16.8045 15.8239 18.24 13.9865 18.24H3.71448C1.87703 18.24 0.330032 16.8045 0.191006 14.9715L0.0227578 12.7498C-0.00469324 12.384 0.269817 12.0644 0.635536 12.0369C1.00303 12.0236 1.32004 12.2831 1.34838 12.6497L1.51574 14.8706C1.60252 16.0147 2.56773 16.9117 3.71448 16.9117H13.9865C15.1332 16.9117 16.0993 16.0147 16.1852 14.8706L16.3535 12.6497C16.3818 12.2831 16.7068 12.0227 17.0663 12.0369ZM9.99297 0.759766C11.3239 0.759766 12.4264 1.75709 12.5925 3.04354L14.3365 3.04431C16.1926 3.04431 17.7015 4.55766 17.7015 6.41902V9.46431C17.7015 9.70075 17.5757 9.91858 17.373 10.0372C15.1872 11.3173 12.4184 12.0638 9.51448 12.1634L9.5148 13.7561C9.5148 14.1228 9.21726 14.4203 8.85066 14.4203C8.48405 14.4203 8.18652 14.1228 8.18652 13.7561L8.18594 12.1637C5.28493 12.065 2.51589 11.3182 0.328527 10.0372C0.124858 9.91858 0 9.70075 0 9.46431V6.41016C0 4.55412 1.51335 3.04431 3.37382 3.04431L5.10882 3.04354C5.27489 1.75709 6.37746 0.759766 7.70834 0.759766H9.99297ZM14.3365 4.37259H3.37382C2.24567 4.37259 1.32828 5.28644 1.32828 6.41016V9.07734C3.43024 10.2194 6.08017 10.8454 8.83834 10.8466L8.85066 10.8455L8.86049 10.8458L9.28213 10.8414C11.8907 10.7793 14.3791 10.1604 16.3732 9.07734V6.41902C16.3732 5.28998 15.4602 4.37259 14.3365 4.37259ZM9.99297 2.08804H7.70834C7.11208 2.08804 6.60876 2.49385 6.46007 3.04376H11.2412C11.0926 2.49385 10.5892 2.08804 9.99297 2.08804Z" fill="currentColor"/>
                         </svg>',
-                        'actions' => ['Sale Daily Report', 'Sale Report By Shop | Location', 'Sale Report By Agency Group'],
+                        'actions' => [],
                         'children' => []
                     ], [
-                        'name' => 'Finance Report',
-                        'slug' => '/report/finance',
+                        'name' => 'Sale Performance by Channel',
+                        'slug' => '/report/sale-performance-by-channel',
                         'type'  => 'menu',
-                        'language' => ['lang' => 'kh', 'name' => "របាយការណ៍ហិរញ្ញវត្ថុ"],
+                        'language' => ['lang' => 'kh', 'name' => "ការអនុវត្តការលក់ដោយឆានែល"],
                         'description' => 'finace payroll by monthly and commission fee ',
                         'status' => true,
                         'icon' => '<svg width="15px" height="15px" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M0 4.4H2.78571V13.5H0V4.4ZM5.2 0.5H7.8V13.5H5.2V0.5ZM10.4 7.92857H13V13.5H10.4V7.92857Z" fill="#B7B7B7"/>
                         </svg>',
-                        'actions' => ['Sale Commission Report', 'Override Commission Report', 'Salary Report'],
+                        'actions' => [],
+                        'children' => [],
+                    ], [
+                        'name' => 'Sale Summary by Channel',
+                        'slug' => '/report/sale-summary-by-channel',
+                        'type'  => 'menu',
+                        'language' => ['lang' => 'kh', 'name' => "សេចក្តីសង្ខេបនៃការលក់ដោយឆានែល"],
+                        'description' => 'Sale Summary by Channel',
+                        'status' => true,
+                        'icon' => '<svg width="15px" height="15px" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 4.4H2.78571V13.5H0V4.4ZM5.2 0.5H7.8V13.5H5.2V0.5ZM10.4 7.92857H13V13.5H10.4V7.92857Z" fill="#B7B7B7"/>
+                        </svg>',
+                        'actions' => [],
+                        'children' => [],
+                    ], [
+                        'name' => 'Summary of shop Performance',
+                        'slug' => '/report/summary-of-shop-performance',
+                        'type'  => 'menu',
+                        'language' => ['lang' => 'kh', 'name' => "សេចក្តីសង្ខេបនៃដំណើរការហាង"],
+                        'description' => 'Summary of shop Performance',
+                        'status' => true,
+                        'icon' => '<svg width="15px" height="15px" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 4.4H2.78571V13.5H0V4.4ZM5.2 0.5H7.8V13.5H5.2V0.5ZM10.4 7.92857H13V13.5H10.4V7.92857Z" fill="#B7B7B7"/>
+                        </svg>',
+                        'actions' => [],
                         'children' => [],
                     ]
                 ],
@@ -270,19 +294,6 @@ class DepartmentSeeder extends Seeder
                                     <path d="M11.3636 2.45455H5.68182L5.11364 0.75H1.13636C0.511364 0.75 0 1.26136 0 1.88636V10.4091C0 11.0341 0.511364 11.5455 1.13636 11.5455H5.68182L6.25 13.25H11.3636C11.9886 13.25 12.5 12.7386 12.5 12.1136V3.59091C12.5 2.96591 11.9886 2.45455 11.3636 2.45455ZM3.40909 9.27273C1.84091 9.27273 0.568182 8 0.568182 6.43182C0.568182 4.86364 1.84091 3.59091 3.40909 3.59091C4.17614 3.59091 4.81818 3.875 5.3125 4.32955L4.5625 5.05114C4.34659 4.84659 3.97159 4.60795 3.40909 4.60795C2.42045 4.60795 1.61932 5.42614 1.61932 6.43182C1.61932 7.4375 2.42045 8.25568 3.40909 8.25568C4.55114 8.25568 5.02273 7.4375 5.06818 6.88636H3.40909V5.91477H6.06818C6.10795 6.09091 6.13636 6.26136 6.13636 6.49432C6.13636 8.11932 5.05114 9.27273 3.40909 9.27273ZM6.91477 6.19318H9.01705C8.77273 6.90341 8.38636 7.57386 7.85227 8.16477C7.67614 7.96591 7.51136 7.75568 7.36364 7.53977L6.91477 6.19318ZM11.6477 11.8295C11.6477 12.142 11.392 12.3977 11.0795 12.3977H7.38636L8.52273 10.9773L7.93182 9.21591L9.69318 10.9773L10.2159 10.4545L8.34091 8.60795L8.35227 8.59659C8.99432 7.88636 9.44886 7.06818 9.71591 6.19886H10.7955V5.46023H8.22159V4.72727H7.48864V5.46023H6.67045L5.94318 3.30682H11.0795C11.392 3.30682 11.6477 3.5625 11.6477 3.875V11.8295Z" fill="currentColor"/>
                                     </svg>',
                         'actions' => ['Change Language'],
-                        'children' => []
-                    ], [
-                        'name' => 'Exchange Rate',
-                        'slug' => '/setting/exchange-rate',
-                        'language' => ['lang' => 'kh', 'name' => "អត្រាប្ដូរប្រាក់"],
-                        'description' => 'Exchange Rate ',
-                        'status' => true,
-                        'icon' => '<svg width="25px" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4.45778 6.20555C2.81833 5.77944 2.29111 5.33889 2.29111 4.65278C2.29111 3.86556 3.02056 3.31667 4.24111 3.31667C5.52667 3.31667 6.00333 3.93056 6.04667 4.83333H7.64278C7.59222 3.59111 6.83389 2.45 5.32444 2.08167V0.5H3.15778V2.06C1.75667 2.36333 0.63 3.27333 0.63 4.66722C0.63 6.33556 2.00944 7.16611 4.02444 7.65C5.83 8.08333 6.19111 8.71889 6.19111 9.39056C6.19111 9.88889 5.83722 10.6833 4.24111 10.6833C2.75333 10.6833 2.16833 10.0189 2.08889 9.16667H0.5C0.586667 10.7483 1.77111 11.6367 3.15778 11.9328V13.5H5.32444V11.9472C6.73278 11.68 7.85222 10.8639 7.85222 9.38333C7.85222 7.33222 6.09722 6.63167 4.45778 6.20555Z" fill="currentColor"/>
-                                    </svg>
-                                    ',
-                        'actions' => ['Update Exchange Rate'],
-                        'type'  => 'menu',
                         'children' => []
                     ], [
                         'name' => 'System Logs',
@@ -338,27 +349,6 @@ class DepartmentSeeder extends Seeder
                         'scope' =>  $childrenGetId,
                         'department_id' => $childrenGetId,
                     ]);
-                }
-                foreach ($children_sub['children'] as $key_sub_sub => $children_sub_sub) {
-                    $subchildrenId = DB::table('departments')->insertGetId([
-                        'name' => $children_sub_sub['name'],
-                        'slug' => $children_sub_sub['slug'],
-                        'icon' => $children_sub_sub['icon'],
-                        'type' => $children_sub_sub['type'],
-                        'languages' => json_encode($children_sub_sub['language'], JSON_UNESCAPED_UNICODE),
-                        'description' => $children_sub_sub['description'],
-                        'status' => $children_sub_sub['status'],
-                        'sort' => $key_sub_sub,
-                        'parent_id' => $childrenGetId
-                    ]);
-                    foreach ($children_sub_sub['actions'] as $key_action_sub_sub => $action_sub_sub) {
-                        DB::table('permissions')->insert([
-                            'sort' => $key_action_sub_sub,
-                            'action' => $action_sub_sub,
-                            'scope' =>  $subchildrenId,
-                            'department_id' => $subchildrenId,
-                        ]);
-                    }
                 }
             }
         }
