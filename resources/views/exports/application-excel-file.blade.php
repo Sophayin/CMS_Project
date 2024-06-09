@@ -26,11 +26,10 @@
                     <th class="text-center text-secondary text-sm">Shop_id</th>
                     <th class="text-center text-secondary text-sm">product_id</th>
                     <th class="text-center text-secondary text-sm">product_price</th>
-                    <th class="text-center text-secondary text-sm">agency_code</th>
                     <th class="text-center text-secondary text-sm">respond_by</th>
+                    <th class="text-center text-secondary text-sm">channel_id</th>
                     <th class="text-center text-secondary text-sm">loan_company_id</th>
-                    <th class="text-center text-secondary text-sm">status</th>
-                    <th class="text-center text-secondary text-sm">is_payroll</th>
+                    <th class="text-center text-secondary text-sm">co_id</th>
                     <th class="text-center text-secondary text-sm">register_year</th>
                     <th class="text-center text-secondary text-sm">register_month</th>
                     <th class="text-center text-secondary text-sm">register_day</th>
@@ -59,11 +58,10 @@
                     <td class="text-sm text-center index-id">1</td>
                     <td class="text-sm text-center index-id">1</td>
                     <td class="text-sm text-center index-id">2200</td>
-                    <td class="text-sm text-center index-id">LC00001</td>
                     <td class="text-sm text-center index-id">Admin</td>
                     <td class="text-sm text-center index-id">1</td>
-                    <td class="text-sm text-center index-id">2</td>
-                    <td class="text-sm text-center index-id">paid</td>
+                    <td class="text-sm text-center index-id">1</td>
+                    <td class="text-sm text-center index-id">1</td>
                     <td class="text-sm text-center index-id">2024</td>
                     <td class="text-sm text-center index-id">05</td>
                     <td class="text-sm text-center index-id">16</td>

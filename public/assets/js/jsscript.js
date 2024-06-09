@@ -143,8 +143,17 @@ window.addEventListener('modal.closeModal', event => {
 window.addEventListener('modal.openModalCommission', event => {
     $("#openModalCommission").modal("show");
 });
+
+window.addEventListener('modal.openModalAssign', event => {
+    $("#openModalAssign").modal("show");
+});
+window.addEventListener('modal.closeModalAssign', event => {
+    $("#openModalAssign").modal("hide");
+});
+
 //
 //window.addEventListener('modal.closedForm', event => {
 //    $('#openModal').modal("hide");
+
 //});
 

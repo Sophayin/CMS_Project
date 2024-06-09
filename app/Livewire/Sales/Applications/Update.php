@@ -5,13 +5,17 @@ namespace App\Livewire\Sales\Applications;
 use App\Models\Address;
 use App\Models\Agency;
 use App\Models\Application;
+use App\Models\Channel;
 use App\Models\City;
+use App\Models\CO;
 use App\Models\Commune;
 use App\Models\District;
+use App\Models\Loan_company;
 use App\Models\Occupation;
 use App\Models\Product;
 use App\Models\Shop;
 use App\Models\Village;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -22,7 +26,8 @@ class Update extends Component
         $client_name, $client_name_translate, $client_profile, $phone, $approved_by, $gender, $guarantor_name,
         $guarantor_name_translate, $guarantor_phone, $reason, $code,
         $occupation_id, $income, $status, $condition, $client_facebook,
-        $loan_company_id, $name, $latitude, $longitude, $product_name, $khmer_identity_card;
+        $loan_company_id, $name, $latitude, $longitude, $product_name, $khmer_identity_card,
+        $channel_id;
 
     public $referrer;
     public $city_id, $district_id, $commune_id, $village_id;
@@ -42,6 +47,10 @@ class Update extends Component
     public $house_no, $street_no;
     public $client_facebook_name = false;
     public $registration_date;
+    public $channels = [];
+    public $co = [];
+    public $mfi = [];
+    public $co_id, $mfi_id;
 
     protected $rules = [
         //'client_name' => 'required|string|max: 255',
@@ -53,8 +62,8 @@ class Update extends Component
         'condition' => 'required',
         'product_price' => 'required',
         'city_id' => 'required',
-        'agency_id' => 'required',
-        'shop_id' => 'required'
+        'shop_id' => 'required',
+        'channel_id' => 'required',
 
     ];
     public function messages()
@@ -67,16 +76,23 @@ class Update extends Component
             'agency_id.required' => "The agency field is required.",
             "client_name_translate.required" => "The client name (khmer) field is required.",
             "shop_id.required" => "The Shop name field is required.",
+            'channel_id.required' => "The channel field is required."
         ];
+    }
+    public function selectMFI($type, $value)
+    {
+        if ($type == 'mfi') {
+            $this->loan_company_id = $value;
+            $this->co_id = $this->co_id;
+        }
+        $this->co = CO::where('loan_company_id', $this->loan_company_id)->orderBy('full_name', 'asc')->get();
     }
 
     public function mount()
     {
         $application = Application::find($this->application_id);
         $this->code = $application->code;
-        $this->agency_id = $application->agency_id;
-        $this->agency_code = $application->agency_code;
-        $this->leader_code = $application->agency_leader_code;
+        $this->channel_id = $application->channel_id;
         $this->shop_id = $application->shop_id;
         $this->client_name = $application->client_name;
         $this->client_name_translate = $application->client_name_translate;
@@ -92,6 +108,8 @@ class Update extends Component
         $this->income = $application->income;
         $this->status = $application->status;
         $this->product_id = $application->product_id;
+        $this->mfi_id = $application->loan_company_id;
+        $this->co_id = $application->co_id;
         $this->condition = $application->condition;
         $this->client_facebook = $application->client_facebook;
         $this->registration_date = $application->created_at->format('Y-m-d');
@@ -111,7 +129,16 @@ class Update extends Component
             $this->latitude = $application->address->latitude ?? '';
             $this->longitude = $application->address->longitude ?? '';
         }
-        $this->agencies = Agency::whereNotNull('code')->whereIn('status', [1, 2])->get();
+        if ($this->loan_company_id) {
+            $this->co = CO::where('loan_company_id', $this->loan_company_id)->orderBy('full_name', 'asc')->get();
+        }
+        $shopIds = auth()->user()->shops->pluck('id')->toArray();
+
+        if (!empty($shopIds)) {
+            $this->shops = Shop::whereIn('id', $shopIds)->get();
+        } else {
+            $this->shops = Shop::all();
+        }
     }
 
     public function edit()
@@ -119,9 +146,7 @@ class Update extends Component
         $this->validate();
         $app = Application::find($this->application_id);
         $app->code = $this->code;
-        $app->agency_id = $this->agency_id;
-        $app->agency_code = $this->agency_code;
-        $app->agency_leader_code = $this->leader_code;
+        $app->channel_id = $this->channel_id;
         $app->product_id = $this->product_id;
         $app->product_name = $this->product_name;
         $app->shop_id = $this->shop_id;
@@ -136,6 +161,8 @@ class Update extends Component
         $app->guarantor_name_translate = $this->guarantor_name_translate;
         $app->guarantor_phone = $this->guarantor_phone;
         $app->occupation_id = $this->occupation_id;
+        $app->loan_company_id = $this->loan_company_id;
+        $app->co_id = $this->co_id;
         $app->income = $this->income;
         $app->condition = $this->condition;
         $app->client_facebook = $this->client_facebook;
@@ -201,24 +228,9 @@ class Update extends Component
     //-- Add impermanent Guarantor--
     public function updateGuarantor()
     {
-        $this->agency_code = Agency::find($this->agency_id)->code ?? '';
         $this->guarantor_name = $this->guarantor_name;
         $this->guarantor_name = $this->guarantor_name_translate;
         $this->guarantor_phone = $this->guarantor_phone;
-    }
-    public function updated()
-    {
-        $agency = Agency::find($this->agency_id);
-        $this->agency_id = $this->agency_id;
-        $this->agency_code = $agency->code ?? '';
-        if ($agency) {
-            $this->leader = $agency->parent;
-            $this->leader_code = $agency->parent->code ?? '';
-        } else {
-            $this->agency_code = '';
-            $this->leader_code = '';
-            $this->leader = null;
-        }
     }
     // Add impermanent Address
     public function saveAddress()
@@ -244,10 +256,10 @@ class Update extends Component
         $this->districts = District::where('city_id', $this->city_id)->orderBy('name', 'asc')->get();
         $this->communes = Commune::where('district_id', $this->district_id)->orderBy('name', 'asc')->get();
         $this->villages = Village::where('commune_id', $this->commune_id)->orderBy('name', 'asc')->get();
-        $this->agency = Agency::whereNotNull('code')->whereNotIn('status', [3, 4, 6])->get();
         $this->occupation = Occupation::all();
         $this->product = Product::all();
-        $this->shops = Shop::all();
+        $this->channels = Channel::all();
+        $this->mfi = Loan_company::all();
         return view('livewire.sales.applications.update');
     }
 }

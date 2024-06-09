@@ -31,6 +31,7 @@ class CreateAddressTable extends Migration
             $table->foreignId('shop_id')->nullable(true);
             $table->foreignId('application_id')->nullable(true);
             $table->foreignId('loan_company_id')->nullable(true);
+            $table->foreignId('co_id')->nullable(true);
             $table->timestamps();
         });
     }

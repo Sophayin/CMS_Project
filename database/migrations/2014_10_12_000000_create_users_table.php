@@ -27,6 +27,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable(true);
             $table->string('password')->nullable(true);
             $table->foreignId('role_id')->nullable(true);
+            $table->json('shop_ids')->nullable(true);
             $table->boolean('active')->default(false);
             $table->boolean('banned')->default(true);
             $table->rememberToken();

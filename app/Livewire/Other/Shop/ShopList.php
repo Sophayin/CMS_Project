@@ -12,7 +12,8 @@ class ShopList extends Component
     use WithPagination;
     public $limit = 10;
     public $search;
-    protected $listeners = ['refresh_shop' => 'render'];
+    public $shopId;
+    protected $listeners = ['refresh_shop' => 'render', 'confirmDelete'];
 
     public function render()
     {
@@ -48,6 +49,24 @@ class ShopList extends Component
             $this->dispatch("alert.message", [
                 'type' => 'warning',
                 'message' => __("Access Denied! You don't have permission to access this function. Request access from your administrator")
+            ]);
+        }
+    }
+    public function deleteShop($shopId)
+    {
+        $this->shopId = $shopId;
+        $this->dispatch('modal.confirmDelete');
+    }
+    public function confirmDelete()
+    {
+        if ($this->shopId) {
+            $shop = Shop::findOrFail($this->shopId);
+            $shop->delete();
+            create_transaction_log(__('Delete shop') . ' : ' . $shop->shop_name, 'Delete', __('This user delete shop') . ' ' . $shop->shop_name . ' ' . __('successfully') . ' ', $shop->shop_name);
+            $this->dispatch('modal.closeDelete');
+            $this->dispatch('alert.message', [
+                'type' => 'success',
+                'message' => __("Deleted Successfully")
             ]);
         }
     }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('loan_companies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->json('languages')->nullable(true);;
+            $table->string('name_translate')->nullable(true);;
             $table->string('phone')->nullable(true);
             $table->string('contact_person')->nullable(true);
             $table->string('telegram')->nullable(true);

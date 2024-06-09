@@ -3,9 +3,14 @@
 namespace App\Livewire\Sales\Applications;
 
 use App\Models\Application;
+use App\Models\Channel;
+use App\Models\Shop;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Symfony\Component\CssSelector\Node\FunctionNode;
 
 class ApplicationList extends Component
 {
@@ -29,14 +34,19 @@ class ApplicationList extends Component
     public $getpositions, $position_id;
     protected $listeners = ['refresh_application' => 'render'];
     protected $queryString = ['action', 'application_id'];
+
     public function render()
     {
         $this->action = $this->action;
         $applications = Application::query();
+        $shopIds = auth()->user()->shops->pluck('id')->toArray();
+        if (!empty($shopIds)) {
+            $applications->whereIn('shop_id', $shopIds);
+        }
         if ($this->search) {
             $applications = $applications->where('client_name', 'ilike', '%' . $this->search . '%')
                 ->orWhere('code', 'ilike', '%' . $this->search . '%')
-                ->orWhere('agency_code', 'ilike', '%' . $this->search . '%')
+                ->orWhere('khmer_identity_card', 'ilike', '%' . $this->search . '%')
                 ->orWhere('client_name_translate', 'ilike', '%' . $this->search . '%')
                 ->orWhere('phone', 'ilike', '%' . $this->search . '%')
                 ->whereHas('shop', function ($q) {
@@ -46,11 +56,6 @@ class ApplicationList extends Component
 
         if ($this->shop_id) {
             $applications = $applications->where('shop_id', $this->shop_id);
-        }
-        if ($this->position_id) {
-            $applications = $applications->whereHas('agency.position', function ($query) {
-                $query->where('id', $this->position_id);
-            });
         }
         if ($this->filter_by_status != null) {
             $applications = $applications->where('status', $this->filter_by_status);
@@ -120,22 +125,21 @@ class ApplicationList extends Component
     {
         $this->start_date = now()->startOfMonth()->toDateString();
         $this->end_date = now()->endOfMonth()->toDateString();
-        $this->getShops = DB::table('shops')
-            ->join('applications', 'shops.id', '=', 'applications.shop_id')
-            ->select('shops.*', 'shop_id')
-            ->distinct()
-            ->get();
+        $shopIds = auth()->user()->shops->pluck('id')->toArray();
+        if (!empty($shopIds)) {
+            $this->getShops = Shop::whereIn('id', $shopIds)->get();
+        } else {
+            $this->getShops = DB::table('shops')
+                ->join('applications', 'shops.id', '=', 'applications.shop_id')
+                ->select('shops.*')
+                ->distinct()
+                ->get();
+        }
         $this->getCities = DB::table('cities')
             ->join('addresss', 'addresss.city_id', '=', 'cities.id')
             ->whereNotNull('addresss.application_id')
             ->select("cities.*")
             ->groupBy('cities.id')
-            ->get();
-        $this->getpositions = DB::table('positions')
-            ->join('agencies', 'agencies.position_id', '=', 'positions.id')
-            ->join('applications', 'applications.agency_id', '=', 'agencies.id')
-            ->select('positions.*')
-            ->groupBy('positions.id')
             ->get();
     }
 
@@ -148,5 +152,17 @@ class ApplicationList extends Component
     public function import_application()
     {
         $this->redirect(route('sale.list', 'application?action=import'));
+    }
+    public $duplicate_app;
+    public function duplicate_application($id)
+    {
+        $application = new Create();
+        $newApplicationCode = $application->generate_application_code();
+        $duplicate_app = Application::find($id);
+        $New_application = $duplicate_app->replicate();
+        $New_application->code = $newApplicationCode;
+        $New_application->status = 1;
+        $New_application->created_at = Carbon::now()->startOfMonth()->toDateString();
+        $New_application->save();
     }
 }

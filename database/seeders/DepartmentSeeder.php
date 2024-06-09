@@ -206,6 +206,39 @@ class DepartmentSeeder extends Seeder
                         'icon' => '<i class="bi bi-list-ul"></i>',
                         'actions' => ['Create Product', 'Edit Product', 'View Product'],
                         'children' => []
+                    ], [
+                        'name' => 'Co',
+                        'slug' => '/manage/co',
+                        'type'  => '',
+                        'language' => ['lang' => 'kh', 'name' => 'មន្ត្រីឥណទាន'],
+                        'description' => 'Co management',
+                        'status' => true,
+                        'type' => 'menu',
+                        'icon' => '<i class="bi bi-person-gear"></i>',
+                        'actions' => ['Create Co', 'Edit Co', 'View Co'],
+                        'children' => []
+                    ], [
+                        'name' => 'Co',
+                        'slug' => '/manage/mfi',
+                        'type'  => '',
+                        'language' => ['lang' => 'kh', 'name' => 'គ្រឹះស្ថានមីក្រូហិរញ្ញវត្ថុ'],
+                        'description' => 'MFI management',
+                        'status' => true,
+                        'type' => 'menu',
+                        'icon' => '<i class="bi bi-buildings"></i>',
+                        'actions' => ['Create Mfi', 'Edit Mfi', 'View Mfi'],
+                        'children' => []
+                    ], [
+                        'name' => 'Co',
+                        'slug' => '/manage/occupation',
+                        'type'  => '',
+                        'language' => ['lang' => 'kh', 'name' => 'មុខរបរ'],
+                        'description' => 'Occupation management',
+                        'status' => true,
+                        'type' => 'menu',
+                        'icon' => '<i class="bi bi-hammer"></i>',
+                        'actions' => ['Create Occupation', 'Edit Occupation', 'View Occupation'],
+                        'children' => []
                     ]
                 ]
             ], [
@@ -269,7 +302,7 @@ class DepartmentSeeder extends Seeder
                         'actions' => [],
                         'children' => [],
                     ]
-                ],
+                ]
             ], [
                 'name' => 'Setting',
                 'slug' => '/setting',

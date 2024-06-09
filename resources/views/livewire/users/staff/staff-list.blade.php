@@ -38,6 +38,9 @@
                                     <td class="text-sm">{{$item->user->phone}}</td>
                                     <td class="text-sm">{{$item->role->name}}</td>
                                     <td class="text-sm" align="center">
+                                        <a style="border-color:azure;" wire:click="assignShop({{ $item->user_id }})" class="rounded-pill btn btn-sm btn btn-outline-success">
+                                            <i class="bi bi-shop"></i>
+                                        </a>
                                         <a style="border-color:azure;" wire:click="edit_current_password({{ $item->id }})" class="rounded-pill btn btn-sm btn-outline-secondary">
                                             <i style="font-size: 1.2rem;" class="bi bi-person-lock"></i>
                                         </a>
@@ -69,9 +72,56 @@
             </div>
         </div>
     </section>
-
+    <div wire:ignore.self class="modal fade" id="openModalAssign" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg ">
+            <form wire:submit.prevent="assignshop_for_user">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{__('Shop List')}}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="table responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Check
+                                                    </th>
+                                                    <th>Shop Name</th>
+                                                    <th>Shop Name (Khmer)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($shops as $N=> $shop )
+                                                <tr>
+                                                    <td>
+                                                        <input class="form-check-input" id="flexCheck{{$shop->id .'-'.$shop->id}}" type="checkbox" wire:model="selectedShops" value="{{$shop->id}}">
+                                                        <label class="form-check-label" for="flexCheck{{$shop->id .'-'.$shop->id}}">{{++$N}}</label>
+                                                    </td>
+                                                    <td>{{$shop->shop_name}}</td>
+                                                    <td>{{$shop->shop_name_translate}}</td>
+                                                    <td>{{$shop->description}}</td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="submit" class="btn btn-primary button_save">{{__('Save')}}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
     @livewire('users.staff.staff-create')
     @livewire('users.staff.staff-update')
     @livewire('users.staff.staff-change-password')
-
 </div>

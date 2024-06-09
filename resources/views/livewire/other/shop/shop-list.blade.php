@@ -19,8 +19,8 @@
                 </div>
             </div>
             <div class="card">
-                <div class="row mt-3 p-3">
-                    <div class="col-lg-3">
+                <div class="row mt-1 p-3">
+                    <div class="col-lg-3 mb-2">
                         <input class="form-control input_search " placeholder="{{__('Type Search...')}}" type="search" wire:model.live="search">
                     </div>
                     <div class="table-responsive">
@@ -28,12 +28,13 @@
                             <thead>
                                 <tr>
                                     <th class="text-center text-secondary text-sm">{{__('No.')}}</th>
-                                    <th class="text-center text-secondary text-sm">{{__('Code')}}</th>
+                                    <th class="text-center text-secondary text-sm">{{__('Abbreviation')}}</th>
                                     <th class="text-center text-secondary text-sm">{{__('Shop Name')}}</th>
                                     <th class="text-center text-secondary text-sm">{{__('Shop Name (Khmer)')}}</th>
+                                    <th class="text-center text-secondary text-sm">{{__('Post Code')}}</th>
+                                    <th class="text-center text-secondary text-sm">{{__('Shop Code')}}</th>
                                     <th class="text-center text-secondary text-sm">{{__('Phone Number')}}</th>
                                     <th class="text-center text-secondary text-sm">{{__('Telegram Phone')}}</th>
-                                    <th class="text-center text-secondary text-sm">{{__('Description')}}</th>
                                     <th width="89" class="text-center text-secondary text-sm">{{__('Action')}}</th>
                                 </tr>
                             </thead>
@@ -44,13 +45,15 @@
                                     <td class="text-sm">{{$item->abbreviation}}</td>
                                     <td class="text-sm">{{$item->shop_name}}</td>
                                     <td class="text-sm">{{$item->shop_name_translate}}</td>
+                                    <td class="text-sm">{{$item->post_code}}</td>
+                                    <td class="text-sm">{{$item->code}}</td>
                                     <td class="text-sm">{{$item->phone}}</td>
                                     <td class="text-sm">{{$item->telephone}}</td>
-                                    <td class="text-sm">{{$item->description}}</td>
                                     <td class="text-center">
                                         <a style="border-color:transparent;" wire:click="get_edit_shop({{$item->id}})" class="rounded-pill btn btn-sm btn btn-outline-success">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
+
                                     </td>
                                 </tr>
                                 @endforeach
@@ -72,8 +75,25 @@
                 </div>
             </div>
         </div>
+        <!-- Modal delete-->
+        <div class="modal fade" id="delete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-danger text-center">
+                            <h5>{{__('Are you sure, You want to delete this ?')}}</h5>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-primary button_save" data-bs-dismiss="modal">{{__('Cancel')}}</button>
+                        <button type="button" wire:click="confirmDelete" class="btn btn-danger delete">{{__('Delete')}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         @livewire('other.shop.update-shop')
         @livewire('other.shop.create-shop')
-
     </section>
 </div>

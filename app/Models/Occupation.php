@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Occupation extends Model
 {
-    protected $table="occupations";
-    
+    protected $table = "occupations";
+
     use HasFactory;
     public function application()
     {
         return $this->hasOne(Application::class);
     }
-    public function agency()
+    public function co()
     {
-        return $this->belongsTo(Agency::class);
+        return $this->hasOne(CO::class);
     }
 }

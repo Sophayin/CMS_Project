@@ -50,7 +50,7 @@
                 <div class="col-2">
                     <p>{{__('Address')}} </p>
                 </div>
-                @if($application->address->city)
+                @if($application->address->city?? '')
                 <div class="col">
                     <p>:
                         {{ $application->address ? __('House No.').' :'.$application->address->house_no : ''}}

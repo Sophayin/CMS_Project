@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Loan_company extends Model
 {
     use HasFactory;
-    public function status()
-    {
-        return $this->belongsTo(Status::class);
-    }
     public function application()
     {
         return $this->hasMany(Application::class);
+    }
+    public function co()
+    {
+        return $this->hasMany(CO::class);
     }
 }

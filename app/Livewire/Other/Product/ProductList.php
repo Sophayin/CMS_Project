@@ -9,6 +9,8 @@ class ProductList extends Component
 {
     public $search;
     public $start_date, $end_date, $formatted_end_date, $formatted_start_date;
+    public $productId, $title;
+
     public function render()
     {
         $product_list = Product::query();
@@ -43,6 +45,24 @@ class ProductList extends Component
             $this->dispatch("alert.message", [
                 'type' => 'warning',
                 'message' => __("Access Denied! You don't have permission to access this function. Request access from your administrator")
+            ]);
+        }
+    }
+    public function deleteProduct($productId)
+    {
+        $this->productId = $productId;
+        $this->dispatch('modal.confirmDelete');
+    }
+    public function confirmDelete()
+    {
+        if ($this->productId) {
+            $product = Product::findOrFail($this->productId);
+            $product->delete();
+            create_transaction_log(__('Delete product') . ' : ' . $product->title, 'Delete', __('This user delete product') . ' ' . $product->title . ' ' . __('successfully') . ' ', $product->title);
+            $this->dispatch('modal.closeDelete');
+            $this->dispatch('alert.message', [
+                'type' => 'success',
+                'message' => __("Deleted Successfully")
             ]);
         }
     }

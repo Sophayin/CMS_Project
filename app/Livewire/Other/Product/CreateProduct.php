@@ -29,7 +29,6 @@ class CreateProduct extends Component
             $errors->add('code', 'The Code already exist');
             return $errors;
         }
-
         $product = new Product();
         $product->title = $this->title;
         $product->condition = $this->condition;
@@ -37,9 +36,10 @@ class CreateProduct extends Component
         $product->code = $this->code;
         $product->year_of_manufacture = $this->year_of_manufacture;
         $product->save();
+        create_transaction_log(__('create product') . ' : ' . $this->title, 'Created', __('This user create product') . ' ' . $this->title . ' ' . __('successfully') . ' ', $this->title);
         $this->dispatch('alert.message', [
             'type' => 'success',
-            'message' => __('Successfully created')
+            'message' => __('Created successfully')
         ]);
         $this->dispatch('modal.closeModal');
         $this->reset();

@@ -18,4 +18,8 @@ class Shop extends Model
     {
         return $this->belongsTo(ShopAgency::class);
     }
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'shop_users', 'shop_id', 'user_id');
+    }
 }

@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="card">
-                <div class="row mt-3 p-3">
+                <div class="row mt-1 p-3">
                     <div class="col-lg-3 mb-2">
                         <input class="form-control input_search " placeholder="{{__('Type Search...')}}" type="search" wire:model.live="search">
                     </div>
@@ -51,11 +51,32 @@
                                         <a style="border-color:transparent;" wire:click="editProduct({{$item->id}})" class="rounded-pill btn btn-sm btn btn-outline-success">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
+                                        <a style=" border-color:azure;" wire:click="deleteProduct({{ $item->id }})" class="rounded-pill btn btn-sm btn-outline-danger">
+                                            <i class="bi bi-trash3"></i>
+                                        </a>
                                     </td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal delete document-->
+        <div class="modal fade" id="delete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-danger text-center">
+                            <h5>{{__('Are you sure, You want to delete this ?')}}</h5>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-primary button_save" data-bs-dismiss="modal">{{__('Cancel')}}</button>
+                        <button type="button" wire:click="confirmDelete" class="btn btn-danger delete">{{__('Delete')}}</button>
                     </div>
                 </div>
             </div>
