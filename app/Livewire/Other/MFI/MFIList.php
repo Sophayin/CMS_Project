@@ -8,6 +8,7 @@ use Livewire\Component;
 class MFIList extends Component
 {
     public $mfiId, $mfi;
+    protected $listeners = ['refresh_mfi' => 'render'];
 
     public function render()
     {

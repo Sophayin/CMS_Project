@@ -86,6 +86,7 @@ class CreateCo extends Component
                 'type' => 'success',
                 'message' => __('Created successfully'),
             ]);
+            $this->dispatch('refresh_co');
             $this->reset([
                 'full_name',
                 'full_name_translate',

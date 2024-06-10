@@ -36,10 +36,9 @@ return new class extends Migration
             $table->string('guarantor_name_translate')->nullable(true);
             $table->string('guarantor_phone')->nullable(true);
             $table->integer('status')->default(1); //[0 =Rejected, 1 = Follow UP, 2 = Approved]
-            $table->foreignId('loan_company_id')->default(null); //[0 =Rejected, 1 = Follow UP, 2 = Approved]
+            $table->foreignId('loan_company_id')->default(null);
             $table->string('created_by')->nullable(true);
             $table->string('updated_by')->nullable(true);
-            $table->boolean('is_payroll')->default(false);
             $table->datetime('registered_date')->nullable(true);
             $table->foreignId('channel_id')->nullable(true);
             $table->timestamps();

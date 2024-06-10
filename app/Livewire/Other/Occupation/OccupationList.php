@@ -10,6 +10,8 @@ class OccupationList extends Component
     public $limit = 15;
     public $search = '';
     public $occupation, $occupationId;
+    protected $listeners = ['refresh_occupation' => 'render'];
+
     public function render()
     {
         $occupation_list = Occupation::query();

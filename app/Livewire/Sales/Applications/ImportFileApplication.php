@@ -62,74 +62,65 @@ class ImportFileApplication extends Component
         $application_imported = [];
         $application_unimported = [];
         foreach ($get_selected_data_row as $item) {
-            if (CO::where('id', $item['co_id'])->exists()) {
-                if (!Client::where('khmer_identity_card', $item['khmer_identity_card'])->exists()) {
-                    $product = Product::where('id', $item['product_id'])->first();
-                    $application = new Create();
-                    $newApplicationCode = $application->generate_application_code();
-                    $client = new Client();
-                    $client->code = $newApplicationCode;
-                    $client->client_name = $item['client_name'];
-                    $client->client_name_translate = $item['client_name_translate'];
-                    $client->gender = $item['gender'];
-                    $client->khmer_identity_card = $item['khmer_identity_card'];
-                    $client->phone = $item['phone'];
-                    $client->occupation_id = $item['occupation_id'];
-                    $client->income = $item['income'];
-                    $client->guarantor_name = $item['guarantor_name'];
-                    $client->guarantor_name_translate = $item['guarantor_name_translate'];
-                    $client->guarantor_phone = $item['guarantor_phone'];
-                    $client->shop_id = $item['shop_id'];
-                    $client->product_id = $item['product_id'] ?? null;
-                    $client->product_name = $product->title ?? null;
-                    $client->condition = $product->condition ?? null;
-                    $client->product_price = $item['product_price'] == null ? $product->price : $item['product_price'];
-                    $client->respond_by = $item['respond_by'];
-                    $client->loan_company_id = $item['loan_company_id'];
-                    $client->co_id = $item['co_id'];
-                    $client->created_by =  Auth::user()->name;
+            if (!Client::where('khmer_identity_card', $item['khmer_identity_card'])->exists()) {
+                $product = Product::where('id', $item['product_id'])->first();
+                $application = new Create();
+                $newApplicationCode = $application->generate_application_code();
+                $client = new Client();
+                $client->code = $newApplicationCode;
+                $client->client_name = $item['client_name'];
+                $client->client_name_translate = $item['client_name_translate'];
+                $client->gender = $item['gender'];
+                $client->khmer_identity_card = $item['khmer_identity_card'];
+                $client->phone = $item['phone'];
+                $client->occupation_id = $item['occupation_id'];
+                $client->income = $item['income'];
+                $client->product_id = $item['product_id'] ?? null;
+                $client->product_name = $product->title ?? null;
+                $client->condition = $product->condition ?? null;
+                $client->product_price = $item['product_price'] == null ? $product->price : $item['product_price'];
+                $registered_date = $item['register_year'] . '-' . $item['register_month'] . "-" . $item['register_day'];
+                $client->created_at = date('Y-m-d h:i:s', strtotime($registered_date));
+                if ($client->save()) {
+                    $application = new Application();
+                    $application->code = $newApplicationCode;
+                    $application->client_id = $client->id;
+                    $application->channel_id = $item['channel_id'] ?? null;
+                    $application->client_name = $item['client_name'];
+                    $application->client_name_translate = $item['client_name_translate'];
+                    $application->gender = $item['gender'];
+                    $application->khmer_identity_card = $item['khmer_identity_card'];
+                    $application->phone = $item['phone'];
+                    $application->occupation_id = $item['occupation_id'];
+                    $application->income = $item['income'];
+                    $application->guarantor_name = $item['guarantor_name'];
+                    $application->guarantor_name_translate = $item['guarantor_name_translate'];
+                    $application->guarantor_phone = $item['guarantor_phone'];
+                    $application->shop_id = $item['shop_id'];
+                    $application->product_id = $item['product_id'] ?? null;
+                    $application->product_name = $product->title ?? null;
+                    $application->condition = $product->condition ?? null;
+                    $application->product_price = $item['product_price'] == null ? $product->price : $item['product_price'];
+                    $application->respond_by = $item['respond_by'];
+                    $application->loan_company_id = $item['loan_company_id'];
+                    $application->created_by =  Auth::user()->name;
                     $registered_date = $item['register_year'] . '-' . $item['register_month'] . "-" . $item['register_day'];
-                    $client->created_at = date('Y-m-d h:i:s', strtotime($registered_date));
-                    if ($client->save()) {
-                        $application = new Application();
-                        $application->code = $newApplicationCode;
-                        $application->channel_id = $item['channel_id'] ?? null;
-                        $application->client_name = $item['client_name'];
-                        $application->client_name_translate = $item['client_name_translate'];
-                        $application->gender = $item['gender'];
-                        $application->khmer_identity_card = $item['khmer_identity_card'];
-                        $application->phone = $item['phone'];
-                        $application->occupation_id = $item['occupation_id'];
-                        $application->income = $item['income'];
-                        $application->guarantor_name = $item['guarantor_name'];
-                        $application->guarantor_name_translate = $item['guarantor_name_translate'];
-                        $application->guarantor_phone = $item['guarantor_phone'];
-                        $application->shop_id = $item['shop_id'];
-                        $application->product_id = $item['product_id'] ?? null;
-                        $application->product_name = $product->title ?? null;
-                        $application->condition = $product->condition ?? null;
-                        $application->product_price = $item['product_price'] == null ? $product->price : $item['product_price'];
-                        $application->respond_by = $item['respond_by'];
-                        $application->loan_company_id = $item['loan_company_id'];
-                        $application->created_by =  Auth::user()->name;
-                        $registered_date = $item['register_year'] . '-' . $item['register_month'] . "-" . $item['register_day'];
-                        $application->created_at = date('Y-m-d h:i:s', strtotime($registered_date));
-                        if ($application->save()) {
-                            $address = new Address();
-                            $address->application_id = $application->id;
-                            $address->city_id = $item['city_id'];
-                            $address->district_id = $item['district_id'];
-                            $address->commune_id = $item['commune_id'];
-                            $address->village_id = $item['village_id'];
-                            $address->house_no = $item['house_no'];
-                            $address->street_no = $item['street_no'];
-                            $address->save();
-                        }
+                    $application->created_at = date('Y-m-d h:i:s', strtotime($registered_date));
+                    if ($application->save()) {
+                        $address = new Address();
+                        $address->application_id = $application->id;
+                        $address->city_id = $item['city_id'];
+                        $address->district_id = $item['district_id'];
+                        $address->commune_id = $item['commune_id'];
+                        $address->village_id = $item['village_id'];
+                        $address->house_no = $item['house_no'];
+                        $address->street_no = $item['street_no'];
+                        $address->save();
                     }
-                    $application_imported[] = $item['khmer_identity_card'];
-                } else {
-                    $application_unimported[] = $item['khmer_identity_card'];
                 }
+                $application_imported[] = $item['khmer_identity_card'];
+            } else {
+                $application_unimported[] = $item['khmer_identity_card'];
             }
         }
         return back()->with([

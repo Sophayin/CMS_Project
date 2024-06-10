@@ -2,6 +2,7 @@
     <?php
 
     use App\Models\Department;
+    use Illuminate\Support\Facades\Request;
 
     $department = Department::where('slug', '/' . Request::path('/'))->first();
     ?>

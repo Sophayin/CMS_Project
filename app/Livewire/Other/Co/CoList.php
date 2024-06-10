@@ -12,7 +12,7 @@ class CoList extends Component
     public $limit = 10;
     public $search;
     public $coId;
-    protected $listeners = ['refresh_shop' => 'render'];
+    protected $listeners = ['refresh_co' => 'render'];
 
     public function render()
     {

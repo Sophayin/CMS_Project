@@ -34,5 +34,6 @@ class CreateOccupation extends Component
             'type' => 'success',
             'message' => 'Created successfully',
         ]);
+        $this->dispatch('refresh_occupation');
     }
 }

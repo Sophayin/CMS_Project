@@ -76,6 +76,7 @@ Route::middleware('auth', 'route_permission')->group(function () {
   Route::get('sales/preview', Preview::class)->name('sale.preview');
 
   Route::GET('/report/{slug}', ManageReport::class)->name('report');
+  Route::GET('/report/Sale Summary Report by Company', SalePerformanceByChannel::class)->name('report.Sale Summary Report by Company');
   Route::GET('/setting/{slug}', ManageSetting::class)->name('setting.language');
 
   Route::GET('/notification', Notification::class)->name('notification');
