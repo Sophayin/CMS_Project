@@ -54,10 +54,11 @@
                     <td class="text-secondary text-sm">{{$M->name}}</td>
                     <td class="text-secondary text-sm">
                         <nobr>
-                            <?php $getkhmer = json_decode($M->languages, true); ?>
+                            <!-- <?php $getkhmer = json_decode($M->languages, true); ?>
                             @if(!empty($getkhmer) )
                             <small>{{ $getkhmer['name'] }}</small>
-                            @endif
+                            @endif -->
+                            {{$M->name_translate}}
                         </nobr>
                     </td>
                     <td class="text-secondary text-sm">

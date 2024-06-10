@@ -22,14 +22,6 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-lg-2 p-2">
-                        <select wire:change="filterByPosition($event.target.value)" class="form-select form-select-lg">
-                            <option value="">--{{ __('All Position')}}--</option>
-                            @foreach($getpositions as $item)
-                            <option value="{{$item->id}}">{{get_translation($item)}} ({{$item->abbreviation}})</option>
-                            @endforeach
-                        </select>
-                    </div>
                     <!-- Date -->
                     <div class="col-lg-4 d-flex mt-2" id="sandbox-container">
                         <div class="input-group">
@@ -52,13 +44,8 @@
                                     <nobr>{{__('Client Name')}}</nobr>
                                 </th>
                                 <th class="text-secondary text-sm">{{__('Gender')}}</th>
+                                <th class="text-secondary text-sm">{{__('Khmer Identity Card')}}</th>
                                 <th class="text-secondary text-sm">{{__('Phone Number')}}</th>
-                                <th class="text-secondary text-sm">
-                                    <nobr>{{__('Agency Code')}}</nobr>
-                                </th>
-                                <th class="text-secondary text-sm">
-                                    <nobr>{{__('Agency Leader')}}</nobr>
-                                </th>
                                 <th class="text-secondary text-sm">{{__('Respond By')}}</th>
                                 <th class="text-secondary text-center text-sm">{{__('Loan Company')}}</th>
                                 <th class="text-secondary text-center text-sm">{{__('Status')}}</th>
@@ -80,9 +67,8 @@
                                 </td>
                                 <td class="text-sm">{{$app->client_name}}</td>
                                 <td class="text-sm">{{__($app->gender)}}</td>
+                                <td class="text-sm">{{$app->khmer_identity_card}}</td>
                                 <td class="text-sm">{{$app->phone}}</td>
-                                <td class="text-sm">{{$app->agency_code}}</td>
-                                <td class="text-sm">{{$app->agency_leader_code}}</td>
                                 <td class="text-sm">{{$app->respond_by}}</td>
                                 <td class="text-center text-sm">
                                     <nobr>{{$app->loan_company->name ?? ''}} </nobr>

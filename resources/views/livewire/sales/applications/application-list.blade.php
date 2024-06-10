@@ -66,15 +66,7 @@
                         <select wire:model.live="shop_id" class="form-select form-select-lg mb-3">
                             <option value="">--{{__('All Shop')}}--</option>
                             @foreach ($getShops as $item)
-                            <option value="{{ $item->id }}">{{ $item->shop_name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-lg-2 p-2">
-                        <select wire:model.live="position_id" class="form-select form-select-lg">
-                            <option value="">--{{ __('All Position')}}--</option>
-                            @foreach($getpositions as $item)
-                            <option value="{{$item->id}}">{{get_translation($item)}} ({{$item->abbreviation}})</option>
+                            <option value="{{ $item->id }}">{{ $item->shop_name }} ({{$item->abbreviation}})</option>
                             @endforeach
                         </select>
                     </div>
@@ -102,14 +94,12 @@
                             <th class="text-secondary text-sm">
                                 <nobr>{{__('Client Name')}}</nobr>
                             </th>
+
+                            <th class="text-secondary text-sm">
+                                <nobr>{{__('Khmer Identity Card')}}</nobr>
+                            </th>
                             <th class="text-secondary text-sm">
                                 <nobr>{{__('Phone Number')}}</nobr>
-                            </th>
-                            <th class="text-secondary text-sm">
-                                <nobr>{{__('Agency Code')}}</nobr>
-                            </th>
-                            <th class="text-secondary text-sm">
-                                <nobr>{{__('Agency Leader')}}</nobr>
                             </th>
                             <th class="text-secondary text-center text-sm">
                                 <nobr>{{__('Status')}}</nobr>
@@ -121,7 +111,10 @@
                                 <nobr>{{__('Loan Company')}}</nobr>
                             </th>
                             <th class="text-secondary text-sm">
-                                <nobr>{{__('Respond By')}}</nobr>
+                                <nobr>{{__('Channel')}}</nobr>
+                            </th>
+                            <th class="text-secondary text-sm">
+                                <nobr>{{__('Co')}}</nobr>
                             </th>
                             <th class="text-secondary text-sm">
                                 <nobr>{{__('Submitted Day')}}</nobr>
@@ -146,9 +139,8 @@
                             <td class="text-sm">
                                 <nobr>{{$app->client_name}}</nobr>
                             </td>
+                            <td class="text-sm">{{$app->khmer_identity_card}}</td>
                             <td class="text-sm">{{$app->phone}}</td>
-                            <td class="text-sm">{{$app->agency_code}}</td>
-                            <td class="text-sm">{{$app->agency_leader_code}}</td>
                             <td class="cursor-pointer">
                                 <?php $color_status = $app->status == 1 ? 'info' : ($app->status == 2 ? 'success' : 'danger'); ?>
                                 <small wire:click="update_application_status({{$app->id}})" class="border-0 btn btn-outline-secondary rounded-pill btn-sm text text-{{$color_status}} pointer application_status">
@@ -175,7 +167,10 @@
                             <td class="text-sm text-center">
                                 <nobr>{{$app->loan_company->name ?? ''}}</nobr>
                             </td>
-                            <td class="text-sm">{{$app->respond_by}}</td>
+                            <td class="text-sm">
+                                <nobr>{{$app->channel->title}}</nobr>
+                            </td>
+                            <td class="text-sm">{{$app->co->full_name ?? ''}}</td>
                             <td class="text-sm text-center">
                                 <nobr>
                                     <?php $working_day = Carbon\Carbon::parse($app->created_at)->diffInDays(Carbon\Carbon::now()->addDay()->startOfDay()) + 1; ?>
@@ -186,6 +181,9 @@
                             <td class="text-sm text-end">
                                 <nobr>
                                     @if(!$app->is_payroll)
+                                    <a style="border-color:azure;" wire:click="duplicate_application({{$app->id}})" class="rounded-pill btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-folder-plus"></i>
+                                    </a>
                                     <a style="border-color:azure;" wire:click="btn_edit_application({{$app->id}})" class="rounded-pill btn btn-sm btn-outline-success">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>

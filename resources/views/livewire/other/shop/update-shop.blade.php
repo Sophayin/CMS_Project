@@ -27,7 +27,6 @@
                             <label class="text fw-semibold">{{__('Phone Number')}} <small class="text-danger">*</small></label>
                             <input type="text" wire:model="phone" class="form-control @error('phone') is-invalid @enderror" placeholder="{{__('Phone Number')}}">
                             @error('phone') <small class="invalid-feedback">{{__($message)}}</small> @enderror
-
                         </div>
                         <div class="col-4">
                             <label class="text fw-semibold">{{__('Telegram')}} <small class="text-danger">*</small></label>
@@ -37,6 +36,14 @@
                         <div class="col-4 mb-3">
                             <label class="text fw-semibold">{{__('Abbreviation')}}</label>
                             <input type="text" wire:model="abbreviation" class="form-control" placeholder="{{__('Abbreviation')}}">
+                        </div>
+                        <div class="col-4 mb-3">
+                            <label for="" class="text fw-semibold">{{__('Post Code')}}</label>
+                            <input type="text" wire:model="post_code" class="form-control" placeholder="{{__('Post Code')}}">
+                        </div>
+                        <div class="col-4 mb-3">
+                            <label for="" class="text fw-semibold">{{__('Shop Code')}}</label>
+                            <input type="text" wire:model="code" class="form-control" placeholder="{{__('Code')}}">
                         </div>
                         <div class="col-4">
                             <label class="text fw-semibold">{{__('Facebook page')}}</label>

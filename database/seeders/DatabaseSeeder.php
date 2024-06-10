@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 
 use App\Models\Award;
+use App\Models\Channel;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -25,10 +26,9 @@ class DatabaseSeeder extends Seeder
             LoanCompanySeeder::class,
             OccupationSeeder::class,
             CountrySeeder::class,
-            AwardSeeder::class,
-            AgencySettingSeeder::class,
             ProductSeeder::class,
             ReasonSeeder::class,
+            ChannelSeeder::class,
         ]);
     }
 }

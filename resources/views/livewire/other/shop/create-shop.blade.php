@@ -15,14 +15,13 @@
                         </div>
                         <div class="col-4">
                             <label for="" class="text fw-semibold">{{__('Shop Name (Khmer)')}} <small class="text-danger">*</small></label>
-                            <input type="text" wire:model="shop_name_translate.name" class="form-control @error('shop_name_translate.name') is-invalid @enderror" placeholder="{{__('Shop Name (Khmer)')}}">
-                            @error('shop_name_translate.name') <small class="invalid-feedback">{{__($message)}}</small> @enderror
+                            <input type="text" wire:model="shop_name_translate" class="form-control @error('shop_name_translate') is-invalid @enderror" placeholder="{{__('Shop Name (Khmer)')}}">
+                            @error('shop_name_translate') <small class="invalid-feedback">{{__($message)}}</small> @enderror
                         </div>
-                        <div class="col-4">
+                        <div class="col-4 mb-3">
                             <label for="" class="text fw-semibold">{{__('Owner')}} <small class="text-danger">*</small></label>
                             <input type="text" wire:model="owner" class="form-control @error('owner') is-invalid @enderror" placeholder="{{__('Owner')}}">
                             @error('owner') <small class="invalid-feedback">{{__($message)}}</small> @enderror
-
                         </div>
                         <div class="col-4 mb-3">
                             <label for="" class="text fw-semibold">{{__('Phone Number')}} <small class="text-danger">*</small></label>
@@ -39,6 +38,14 @@
                         <div class="col-4 mb-3">
                             <label for="" class="text fw-semibold">{{__('Abbreviation')}}</label>
                             <input type="text" wire:model="abbreviation" class="form-control" placeholder="{{__('Abbreviation')}}">
+                        </div>
+                        <div class="col-4 mb-3">
+                            <label for="" class="text fw-semibold">{{__('Post Code')}}</label>
+                            <input type="text" wire:model="post_code" class="form-control" placeholder="{{__('Post Code')}}">
+                        </div>
+                        <div class="col-4 mb-3">
+                            <label for="" class="text fw-semibold">{{__('Shop Code')}}</label>
+                            <input type="text" wire:model="code" class="form-control" placeholder="{{__('Shop Code')}}">
                         </div>
                         <div class="col-4">
                             <label for="" class="text fw-semibold">{{__('Facebook page')}}</label>

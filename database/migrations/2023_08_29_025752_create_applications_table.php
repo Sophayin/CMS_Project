@@ -26,9 +26,7 @@ return new class extends Migration
             $table->string('client_name_translate')->nullable(true);
             $table->foreignId('occupation_id')->nullable(true);
             $table->string('income')->nullable(true);
-            $table->foreignId('agency_id')->nullable(true);
-            $table->string('agency_code')->nullable(true);
-            $table->string('agency_leader_code')->nullable(true);
+            $table->foreignId('co_id')->nullable(true);
             $table->foreignId('product_id')->nullable(true);
             $table->string('product_name')->nullable(true);
             $table->string('condition')->nullable(true);
@@ -43,6 +41,7 @@ return new class extends Migration
             $table->string('updated_by')->nullable(true);
             $table->boolean('is_payroll')->default(false);
             $table->datetime('registered_date')->nullable(true);
+            $table->foreignId('channel_id')->nullable(true);
             $table->timestamps();
         });
     }

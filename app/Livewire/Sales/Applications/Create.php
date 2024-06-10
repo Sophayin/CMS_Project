@@ -5,13 +5,18 @@ namespace App\Livewire\Sales\Applications;
 use App\Models\Address;
 use App\Models\Agency;
 use App\Models\Application;
+use App\Models\Channel;
 use App\Models\City;
+use App\Models\Client;
+use App\Models\CO;
 use App\Models\Commune;
 use App\Models\District;
+use App\Models\Loan_company;
 use App\Models\Occupation;
 use App\Models\Product;
 use App\Models\Shop;
 use App\Models\Village;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -24,8 +29,8 @@ class Create extends Component
         $product_price, $occupation, $guarantor_name, $guarantor_name_translate,
         $guarantor_phone, $reason, $client_profile, $client_address, $title,
         $status = 1, $client_facebook, $product_id, $agency_code, $latitude, $longitude,
-        $khmer_identity_card;
-
+        $khmer_identity_card, $channel_id, $client_id, $clients;
+    public $channels = [];
     public $app_code;
     public $loan_company_id = 0;
     public $respond_by;
@@ -51,9 +56,14 @@ class Create extends Component
     public $leader;
     public $facebook = false;
     public $code;
-    public $agency;
-    public $leader_code;
     public $registration_date;
+    public $mfi = [];
+    public $co = [];
+    public $filteredCo = [];
+    public $co_id;
+
+
+
     protected $listeners = ['onChange'];
     protected $rules = [
         'shop_name' => 'required',
@@ -65,7 +75,7 @@ class Create extends Component
         'condition' => 'required',
         'product_price' => 'required',
         'city_id' => 'required',
-        'agency_id' => 'required',
+        'channel_id' => 'required',
     ];
     public function messages()
     {
@@ -75,85 +85,123 @@ class Create extends Component
             'phone.required' => 'The phone field must be at least 6 characters.',
             'city_id.required' => 'The city field is required.',
             'product_price.required' => "The price field is required.",
-            'agency_id.required' => "The agency field is required."
+            'agency_id.required' => "The agency field is required.",
+            'channel_id.required' => "The channel field is required."
+
         ];
     }
 
     public function updated($propertyName)
     {
-        $agency = Agency::find($this->agency_id);
-        $this->agency_id = $this->agency_id;
-        $this->agency_code = $agency->code ?? '';
-        if ($agency) {
-            $this->leader = $agency->parent;
-            $this->leader_code = $agency->parent->code ?? '';
-        } else {
-            $this->agency_code = '';
-            $this->leader_code = '';
-            $this->leader = null;
-        }
         $this->validateOnly($propertyName);
     }
-
+    public function selectMFI($type, $value)
+    {
+        if ($type == 'mfi') {
+            $this->loan_company_id = $value;
+            $this->co_id = $this->co_id;
+        }
+        $this->co = CO::where('loan_company_id', $this->loan_company_id)->orderBy('full_name', 'asc')->get();
+    }
     public function mount()
     {
         $this->registration_date = date('Y-m-d');
+        $this->mfi = Loan_company::all();
+        $shopIds = auth()->user()->shops->pluck('id')->toArray();
+        if (!empty($shopIds)) {
+            $this->shops = Shop::whereIn('id', $shopIds)->get();
+        } else {
+            $this->shops = Shop::all();
+        }
     }
 
     public function render()
     {
         $this->dispatch('loadAgency');
         $this->products = Product::all();
-        $this->shops = Shop::all();
+        $this->channels = Channel::all();
         $this->occupations = Occupation::all();
-        $this->agencies = Agency::whereNotNull('code')->whereIn('status', [1, 2])->get();
         $this->cities = City::orderBy('name', 'asc')->get();
         return view('livewire.sales.applications.create');
     }
 
     public function submit()
     {
-        $this->validate();
-        $create = new Application();
-        $create->code = $this->generate_application_code();
-        $create->agency_id = $this->agency_id;
-        $create->agency_code = $this->agency_code;
-        $create->agency_leader_code = $this->leader_code;
-        $create->client_name = $this->client_name;
-        $create->client_name_translate = $this->client_name_translate;
-        $create->gender = $this->gender;
-        $create->phone = $this->phone;
-        $create->khmer_identity_card = $this->khmer_identity_card;
-        $create->occupation_id = $this->occupation;
-        $create->income = $this->income;
-        $create->shop_id = $this->shop_name;
-        $create->condition = $this->condition;
-        $create->product_id = $this->product_id;
-        $create->product_name = $this->product_name;
-        $create->product_price = $this->product_price;
-        $create->guarantor_name = $this->guarantor_name;
-        $create->guarantor_name_translate = $this->guarantor_name_translate;
-        $create->guarantor_phone = $this->guarantor_phone;
-        $create->status = $this->status;
-        $create->loan_company_id = $this->loan_company_id;
-        $create->respond_by = $this->respond_by;
-        $create->client_facebook = $this->client_facebook;
-        $create->created_by = Auth()->user()->username;
-        $create->created_at = $this->registration_date . ' ' . date("h:i:s");
-        if ($create->save()) {
-            $address = new Address;
-            $address->city_id = $this->city_id;
-            $address->district_id = $this->district_id;
-            $address->commune_id = $this->commune_id;
-            $address->village_id = $this->village_id;
-            $address->house_no = $this->house_no;
-            $address->street_no = $this->street_no;
-            $address->latitude = $this->latitude;
-            $address->longitude = $this->longitude;
-            $address->application_id = $create['id'];
-            $address->save();
+        $exist = $this->getErrorBag();
+        if (Client::where('khmer_identity_card', $this->khmer_identity_card)->exists() && Application::where('khmer_identity_card', $this->khmer_identity_card)->exists()) {
+            $exist->add('khmer_identity_card', 'This khmer identity card is already used');
+            if ($exist) {
+                return $exist;
+            }
+        } else {
+            $this->validate();
+            $clients = new Client();
+            $clients->code = $this->generate_application_code();
+            $clients->channel_id = $this->channel_id;
+            $clients->client_name = $this->client_name;
+            $clients->client_name_translate = $this->client_name_translate;
+            $clients->gender = $this->gender;
+            $clients->phone = $this->phone;
+            $clients->khmer_identity_card = $this->khmer_identity_card;
+            $clients->occupation_id = $this->occupation;
+            $clients->income = $this->income;
+            $clients->shop_id = $this->shop_name;
+            $clients->condition = $this->condition;
+            $clients->product_id = $this->product_id;
+            $clients->product_name = $this->product_name;
+            $clients->product_price = $this->product_price;
+            $clients->guarantor_name = $this->guarantor_name;
+            $clients->guarantor_name_translate = $this->guarantor_name_translate;
+            $clients->guarantor_phone = $this->guarantor_phone;
+            $clients->status = $this->status;
+            $clients->loan_company_id = $this->loan_company_id;
+            $clients->co_id = $this->co_id;
+            $clients->respond_by = $this->respond_by;
+            $clients->client_facebook = $this->client_facebook;
+            $clients->created_by = Auth()->user()->username;
+            $clients->created_at = $this->registration_date . ' ' . date("h:i:s");
+            if ($clients->save()) {
+                $create = new Application();
+                $create->code = $this->generate_application_code();
+                $create->client_id = $clients->id;
+                $create->channel_id = $this->channel_id;
+                $create->client_name = $this->client_name;
+                $create->client_name_translate = $this->client_name_translate;
+                $create->gender = $this->gender;
+                $create->phone = $this->phone;
+                $create->khmer_identity_card = $this->khmer_identity_card;
+                $create->occupation_id = $this->occupation;
+                $create->income = $this->income;
+                $create->shop_id = $this->shop_name;
+                $create->condition = $this->condition;
+                $create->product_id = $this->product_id;
+                $create->product_name = $this->product_name;
+                $create->product_price = $this->product_price;
+                $create->guarantor_name = $this->guarantor_name;
+                $create->guarantor_name_translate = $this->guarantor_name_translate;
+                $create->guarantor_phone = $this->guarantor_phone;
+                $create->status = $this->status;
+                $create->loan_company_id = $this->loan_company_id;
+                $create->co_id = $this->co_id;
+                $create->respond_by = $this->respond_by;
+                $create->client_facebook = $this->client_facebook;
+                $create->created_by = Auth()->user()->username;
+                $create->created_at = $this->registration_date . ' ' . date("h:i:s");
+                if ($create->save()) {
+                    $address = new Address;
+                    $address->city_id = $this->city_id;
+                    $address->district_id = $this->district_id;
+                    $address->commune_id = $this->commune_id;
+                    $address->village_id = $this->village_id;
+                    $address->house_no = $this->house_no;
+                    $address->street_no = $this->street_no;
+                    $address->latitude = $this->latitude;
+                    $address->longitude = $this->longitude;
+                    $address->application_id = $create['id'];
+                    $address->save();
+                }
+            }
         }
-
         create_transaction_log(__('Created Application') . ' : ' . $this->client_name, 'Created', __('This user created application') . ' ' . $this->client_name . ' ' . __('successfully') . ' ', $this->client_name);
         $this->dispatch('alert.message', [
             'type' => 'success',

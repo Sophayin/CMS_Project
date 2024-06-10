@@ -8,8 +8,4 @@ use Illuminate\Database\Eloquent\Model;
 class Upload extends Model
 {
     use HasFactory;
-    public function agency()
-    {
-        return $this->hasOne(Agency::class);
-    }
 }

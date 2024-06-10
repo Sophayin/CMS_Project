@@ -40,9 +40,6 @@ if (!function_exists('staff_profile')) {
     }
 }
 
-//{{ Today()->diffInDays(Carbon\Carbon::parse($agency->registered_date)) }}
-//{{(Today()->diffInDays(Carbon\Carbon::parse($agency->registered_date)) <= 1 ? __('Day'): __('Days'))}}
-
 if (!function_exists('check_user_exist')) {
     function check_user_exist($column, $value)
     {
@@ -54,29 +51,6 @@ if (!function_exists('check_role_name_exist')) {
     function check_role_name_exist($column, $value)
     {
         return Role::where($column, $value)->first();
-    }
-}
-if (!function_exists('check_agency_expiration')) {
-    function check_agency_expiration()
-    {
-        $agencies = Agency::whereIn('status', [1, 2])->get();
-        $setting = AgencySetting::first();
-        foreach ($agencies as $agency) {
-            $diff_days = Today()->diffInDays(Carbon::parse($agency->registered_date));
-            if ($diff_days >= ($setting->period_expiration - 7)) {
-                $check_notification = Notification::whereDay('created_at', Carbon::now()->day())->exists();
-                if (!$check_notification) {
-                    $notify = new Notification();
-                    $notify->title = $agency->full_name;
-                    $notify->type = "notify";
-                    $notify->description = $agency->full_name . ", will expire within " . $diff_days . " days more";
-                    $notify->is_read = false;
-                    $notify->agency_id = $agency->id;
-                    $notify->save();
-                    return;
-                }
-            }
-        }
     }
 }
 
@@ -139,29 +113,6 @@ if (!function_exists('get_application_status')) {
         }
     }
 }
-
-if (!function_exists('get_award')) {
-    function get_award($total_sale, $total_recruit, $position_id)
-    {
-        $agency_award = AwardTarget::where('position_id', $position_id)
-            ->where('target_sale', '<=', $total_sale)
-            ->where('target_recruit', '<=', $total_recruit)
-            ->get();
-        $reward = '';
-        if ($position_id == 5) {
-            if ($total_sale >= 3 && $total_recruit >= 3)
-                return $reward = "Super LC";
-        } else {
-            $reward = '';
-            foreach ($agency_award as $award) {
-                if ($total_sale >= $award->target_sale && $total_recruit >= $award->target_recruit) {
-                    $reward = $award->award->name ?? '';
-                }
-            }
-            return $reward;
-        }
-    }
-}
 if (!function_exists('create_transaction_log')) {
     function create_transaction_log($action, $type, $desc, $reference)
     {
@@ -173,36 +124,6 @@ if (!function_exists('create_transaction_log')) {
         $action_log->created_by_user = Auth::user()->name;
         $action_log->user_id = Auth::id();
         $action_log->save();
-    }
-}
-if (!function_exists('generate_agency_code')) {
-    function generate_agency_code($position_id)
-    {
-        $positions = [
-            1 => ['prefix' => 'MP', 'padding' => 1],
-            2 => ['prefix' => 'BD', 'padding' => 2],
-            3 => ['prefix' => 'BM', 'padding' => 3],
-            4 => ['prefix' => 'CA', 'padding' => 4],
-            5 => ['prefix' => 'LC', 'padding' => 5],
-        ];
-        // return $position_id;
-        $positionData = $positions[$position_id];
-        $latestAgencyCode = Agency::where('position_id', $position_id)->max('code');
-        $latestPromoteCode = AgencyHistory::where('position_id', $position_id)->max('agency_code');
-        $latestCode = max($latestAgencyCode, $latestPromoteCode);
-        if ($latestCode) {
-            preg_match('/\d+/', $latestCode, $matches);
-            $currentNumber = (int)$matches[0] + 1;
-        } else {
-            $currentNumber = 1;
-        }
-
-        $newCode = $positionData['prefix'] . str_pad($currentNumber, $positionData['padding'], '0', STR_PAD_LEFT);
-        while (Agency::where('code', $newCode)->exists() || AgencyHistory::where('agency_code', $newCode)->exists()) {
-            $currentNumber++;
-            $newCode = $positionData['prefix'] . str_pad($currentNumber, $positionData['padding'], '0', STR_PAD_LEFT);
-        }
-        return $newCode;
     }
 }
 

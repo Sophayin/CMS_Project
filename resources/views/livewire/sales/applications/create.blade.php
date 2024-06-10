@@ -165,8 +165,40 @@
                         </div>
                     </div>
                     <!--End request_section -->
+                    <!-- Channel & MFI & Co -->
+                    <div class="row mt-3">
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <label for="" class="form-label fw-semibold">{{__('Select Channel')}} </label>
+                            <select class="form-select form-select-lg @error('channel_id') is-invalid @enderror" wire:model="channel_id">
+                                <option value="0">{{__('Channel')}}</option>
+                                @foreach ($channels as $channel )
+                                <option value="{{$channel->id}}">{{$channel->title}}</option>
+                                @endforeach
+                            </select>
+                            @error('channel_id') <small class="invalid-feedback">{{ __($message) }}</small> @enderror
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <label for="" class="form-label fw-semibold">{{__('Select MFI')}} </label>
+                            <select class="form-select form-select-lg @error('loan_company_id') is-invalid @enderror" wire:change="selectMFI('mfi', $event.target.value)" wire:model="loan_company_id">
+                                <option value="0">{{__('Choose')}}</option>
+                                @foreach ($mfi as $m )
+                                <option value="{{$m->id}}">{{$m->name}}</option>
+                                @endforeach
+                            </select>
+                            @error('loan_company_id') <small class="invalid-feedback">{{ __($message) }}</small> @enderror
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <label class="form-label text fw-semibold">{{__('Select CO')}} <small class="text-danger">*</small></label>
+                            <select wire:model="co_id" class="form-select" id="selectedco" style="width: 100%;">
+                                <option value="">--{{__('Choose')}}--</option>
+                                @foreach ($co as $c )
+                                <option value="{{$c->id}}">{{$c->full_name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                     <!-- Guarantor_section -->
-                    <div class="row mb-3">
+                    <div class="row mt-3 mb-3">
                         <div class="col fw-semibold">
                             <span wire:click="guarantorModal" class="pointer w-100" style="color: #034c72;">
                                 @if(empty($guarantor_name))
@@ -187,25 +219,6 @@
                             <small class="text-body-secondary fs-7">{{__('Phone Number')}}: {{$guarantor_phone}}</small>
                             @endif
                         </div>
-                    </div>
-                    <!--Select agency Leader-->
-                    <div class="row mb-3">
-                        <div class="col-lg-4 col-md-6 col-sm-12">
-                            <label class="form-label text fw-semibold">{{__('Agency')}} <small class="text-danger">*</small></label>
-                            <select wire:model.live="agency_id" class="form-select @error('agency_id') is-invalid @enderror" id="selectedByAgency" style="width: 100%;">
-                                <option value="">--{{__('Choose Agency')}}--</option>
-                                @foreach($agencies as $agen)
-                                <option value="{{$agen->id}}"> {{ $agen->code ? '('.$agen->code.') - ' : "" }}{{$agen->full_name }}</option>
-                                @endforeach
-                            </select>
-                            @error('agency_id') <small class="invalid-feedback"> {{ __($message) }}</small> @enderror
-                        </div>
-                        @if($leader_code)
-                        <div class="col-lg-4 col-md-6 col-sm-12">
-                            <label for="text" class="form-label text fw-semibold">{{__('Leader')}}</label>
-                            <input type="text" class="form-control" wire:model="leader_code" readonly />
-                        </div>
-                        @endif
                     </div>
                     <div class="row mt-3">
                         <span wire:click="mediaShow" class="pointer p-2 w-100 fw-semibold" style="color: #034c72;">
@@ -277,13 +290,13 @@
     //--selected agency--
     Livewire.on('loadAgency', postId => {
         jQuery(document).ready(function() {
-            jQuery('#selectedByAgency').select2();
+            jQuery('#selectedco').select2();
         });
     })
     jQuery(document).ready(function() {
-        jQuery('#selectedByAgency').select2();
-        jQuery('#selectedByAgency').on('change', function(e) {
-            @this.set('agency_id', jQuery(this).val());
+        jQuery('#selectedco').select2();
+        jQuery('#selectedco').on('change', function(e) {
+            @this.set('co_id', jQuery(this).val());
         });
     });
 </script>

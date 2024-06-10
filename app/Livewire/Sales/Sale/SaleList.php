@@ -3,7 +3,9 @@
 namespace App\Livewire\Sales\Sale;
 
 use App\Models\Application;
+use App\Models\Shop;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -26,13 +28,16 @@ class SaleList extends Component
     {
         $this->start_date = now()->startOfMonth()->toDateString();
         $this->end_date = today()->toDateString();
-        $this->getShops = DB::table('shops')
-            ->join('applications', 'shops.id', '=', 'applications.shop_id')
-            ->where('applications.status', 2)
-            ->select('shops.*', 'shop_id')
-            ->distinct()
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $shopIds = auth()->user()->shops->pluck('id')->toArray();
+        if (!empty($shopIds)) {
+            $this->getShops = Shop::whereIn('id', $shopIds)->get();
+        } else {
+            $this->getShops = DB::table('shops')
+                ->join('applications', 'shops.id', '=', 'applications.shop_id')
+                ->select('shops.*')
+                ->distinct()
+                ->get();
+        }
 
         $this->getCities = DB::table('cities')
             ->join('addresss', 'addresss.city_id', '=', 'cities.id')
@@ -40,16 +45,14 @@ class SaleList extends Component
             ->select("cities.*")
             ->groupBy('cities.id')
             ->get();
-        $this->getpositions = DB::table('positions')
-            ->join('agencies', 'agencies.position_id', '=', 'positions.id')
-            ->join('applications', 'applications.agency_id', '=', 'agencies.id')
-            ->select('positions.*')
-            ->groupBy('positions.id')
-            ->get();
     }
     public function render()
     {
-        $applications = Application::where('status', 2);
+        $applications = Application::query();
+        $shopIds = auth()->user()->shops->pluck('id')->toArray();
+        if (!empty($shopIds)) {
+            $applications->whereIn('shop_id', $shopIds)->where('status', 2);
+        }
         if ($this->search) {
             $applications = $applications->where('client_name', 'like', '%' . $this->search . '%');
         }
@@ -66,7 +69,6 @@ class SaleList extends Component
                 return $query->where('city_id', $this->city_id);
             });
         }
-
         $applications = $applications->whereBetween('created_at', [$this->start_date . ' 00:00:00', $this->end_date . ' 23:59:59 '])
             ->orderBy('created_at', 'desc')->paginate(10);
 

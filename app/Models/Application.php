@@ -31,10 +31,6 @@ class Application extends Model
     {
         return $this->belongsTo(Product::class);
     }
-    public function agency()
-    {
-        return $this->belongsTo(Agency::class);
-    }
     public function application_status()
     {
         return $this->hasMany(ApplicationStatus::class)->orderBy('created_at', 'desc');
@@ -46,5 +42,13 @@ class Application extends Model
     public function reason()
     {
         return $this->belongsTo(reason::class);
+    }
+    public function channel()
+    {
+        return $this->belongsTo(Channel::class);
+    }
+    public function co()
+    {
+        return $this->belongsTo(CO::class);
     }
 }

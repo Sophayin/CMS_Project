@@ -37,18 +37,25 @@ class EditProduct extends Component
     public function updateProduct()
     {
         $this->validate();
+        $errors = $this->getErrorBag();
         $products = Product::find($this->products->id);
-        $products->title = $this->title;
-        $products->condition = $this->condition;
-        $products->price = $this->price;
-        $products->year_of_manufacture = $this->year_of_manufacture;
-        $products->code = $this->code;
-        $products->description = $this->description;
-        $products->save();
-        $this->dispatch('alert.message', [
-            'type' => 'success',
-            'message' => __('Successfully updated')
-        ]);
-        $this->dispatch('modal.closeModal');
+        if ($this->code != $products->code && Product::where('code', $this->code)->where('id', '!=', $products->id)->exists()) {
+            $errors->add('code', 'The Code already exists');
+            return $errors;
+        } else {
+            $products->title = $this->title;
+            $products->condition = $this->condition;
+            $products->price = $this->price;
+            $products->year_of_manufacture = $this->year_of_manufacture;
+            $products->code = $this->code;
+            $products->description = $this->description;
+            $products->save();
+            create_transaction_log(__('update product') . ' : ' . $this->title, 'updated', __('This user update product') . ' ' . $this->title . ' ' . __('successfully') . ' ', $this->title);
+            $this->dispatch('alert.message', [
+                'type' => 'success',
+                'message' => __('Updated successfully')
+            ]);
+            $this->dispatch('modal.closeModal');
+        }
     }
 }

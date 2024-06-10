@@ -9,6 +9,26 @@
                     <div class="d-flex justify-content-end">
                         <div class="p-2">
                             <div class="col-lg-12 col-sm-6">
+                                <a wire:click="downloadChannel">
+                                    <button class="btn btn-secondary button_save">
+                                        <i class="bi bi-box-arrow-up"></i>
+                                        {{__('Download Channels')}}
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="p-2">
+                            <div class="col-lg-12 col-sm-6">
+                                <a wire:click="downloadCO">
+                                    <button class="btn btn-secondary button_save">
+                                        <i class="bi bi-box-arrow-up"></i>
+                                        {{__('Download CO')}}
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="p-2">
+                            <div class="col-lg-12 col-sm-6">
                                 <a wire:click="downloadMFI">
                                     <button class="btn btn-secondary button_save">
                                         <i class="bi bi-box-arrow-up"></i>
@@ -70,7 +90,7 @@
                     <div class="alert alert-warning text mt-3">
                         <div class="row text d-flex">
                             <div class="text">{{__('unimported Data')}} : ({{ count(session('unimported')) }})
-                                {{__('Name')}} : {{json_encode(session('unimported'))}}
+                                {{__('Khmer Identity Card')}} : {{json_encode(session('unimported'))}}
                             </div>
                         </div>
                     </div>
@@ -123,19 +143,16 @@
                                         <nobr>{{__("Price")}}</nobr>
                                     </th>
                                     <th rowspan="2" class="text-center text-secondary text-sm">
-                                        <nobr>{{__('Agency Code')}}</nobr>
+                                        <nobr>{{__('Respond By')}}</nobr>
                                     </th>
                                     <th rowspan="2" class="text-center text-secondary text-sm">
-                                        <nobr>{{__('Respond By')}}</nobr>
+                                        <nobr>{{__('Channel')}}</nobr>
                                     </th>
                                     <th rowspan="2" class="text-center text-secondary text-sm">
                                         <nobr>{{__('Loan Company')}}</nobr>
                                     </th>
                                     <th rowspan="2" class="text-center text-secondary text-sm">
-                                        <nobr>{{__('Status')}}</nobr>
-                                    </th>
-                                    <th rowspan="2" class="text-center text-secondary text-sm">
-                                        <nobr>{{__('Is Payroll')}}</nobr>
+                                        <nobr>{{__('Co')}}</nobr>
                                     </th>
                                     <th rowspan="2" class="text-center text-secondary text-sm">
                                         <nobr>{{__('Register Date')}}</nobr>
@@ -228,19 +245,30 @@
                                         @endif
                                     </td>
                                     <td class="text-sm text">${{number_format($row['product_price'],2)}}</td>
-                                    <td class="text-sm text">{{$row['agency_code']}}</td>
                                     <td class="text-sm text">{{$row['respond_by']}}</td>
+                                    <td class="text-sm text">
+                                        @php
+                                        $channel = \App\Models\Channel::find($row['channel_id'])
+                                        @endphp
+                                        @if($channel)
+                                        <nobr> {{$channel->title}}</nobr>
+                                        @endif
+                                    </td>
                                     <td class="text-sm text">
                                         @php
                                         $loan_company = \App\Models\Loan_company::find($row['loan_company_id'])
                                         @endphp
                                         @if($loan_company)
-                                        <nobr> {{get_translation($loan_company)}}</nobr>
+                                        <nobr> {{$loan_company->name}}</nobr>
                                         @endif
                                     </td>
-                                    <td class="text-sm text">{{__(get_application_status($row['status'])['label'])}}</td>
                                     <td class="text-sm text">
-                                        <nobr>{{__($row['is_payroll'])}}</nobr>
+                                        @php
+                                        $co = \App\Models\Co::find($row['co_id'])
+                                        @endphp
+                                        @if($co)
+                                        <nobr> {{$co->full_name}}</nobr>
+                                        @endif
                                     </td>
                                     <td class="text-sm text">
                                         <nobr>
