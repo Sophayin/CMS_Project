@@ -53,7 +53,6 @@ class ApplicationList extends Component
                     $q->orWhere('shop_name', 'ilike', '%' . $this->search . '%');
                 });
         }
-
         if ($this->shop_id) {
             $applications = $applications->where('shop_id', $this->shop_id);
         }

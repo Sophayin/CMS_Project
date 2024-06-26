@@ -10,7 +10,7 @@ class ProductList extends Component
     public $search;
     public $start_date, $end_date, $formatted_end_date, $formatted_start_date;
     public $productId, $title;
-
+    protected $listeners = ['refresh_product' => 'render'];
     public function render()
     {
         $product_list = Product::query();

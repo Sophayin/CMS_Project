@@ -48,7 +48,7 @@ class SaleList extends Component
     }
     public function render()
     {
-        $applications = Application::query();
+        $applications = Application::query()->where('status', 2);
         $shopIds = auth()->user()->shops->pluck('id')->toArray();
         if (!empty($shopIds)) {
             $applications->whereIn('shop_id', $shopIds)->where('status', 2);

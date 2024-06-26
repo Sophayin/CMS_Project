@@ -113,7 +113,6 @@ class Update extends Component
         $this->condition = $application->condition;
         $this->client_facebook = $application->client_facebook;
         $this->registration_date = $application->created_at->format('Y-m-d');
-
         if ($application->address) {
             $this->address = Address::where('application_id', $this->application_id)->first();
             $this->city_id = $application->address->city_id ?? 0;

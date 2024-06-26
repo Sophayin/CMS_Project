@@ -244,7 +244,7 @@ class DepartmentSeeder extends Seeder
             ], [
                 'name' => 'Report',
                 'slug' => '/report',
-                'type'  => 'agency',
+                'type'  => 'list',
                 'language' => ['lang' => 'kh', 'name' => "របាយការណ៍"],
                 'description' => 'reporting for  management export ',
                 'status' => true,

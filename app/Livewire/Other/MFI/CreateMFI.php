@@ -40,5 +40,6 @@ class CreateMFI extends Component
             'type' => 'success',
             'message' => 'Created successfully',
         ]);
+        $this->dispatch('refresh_mfi');
     }
 }

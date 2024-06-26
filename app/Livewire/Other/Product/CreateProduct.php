@@ -9,6 +9,7 @@ class CreateProduct extends Component
 {
     public $title, $code, $price, $condition, $year_of_manufacture, $description;
     public $existingCode;
+
     public function render()
     {
         return view('livewire.other.product.create-product');
@@ -26,7 +27,7 @@ class CreateProduct extends Component
         $this->validate();
         $errors = $this->getErrorBag();
         if (Product::where('code', $this->code)->exists()) {
-            $errors->add('code', 'The Code already exist');
+            $errors->add('code', 'The Code already exists');
             return $errors;
         }
         $product = new Product();
@@ -42,6 +43,7 @@ class CreateProduct extends Component
             'message' => __('Created successfully')
         ]);
         $this->dispatch('modal.closeModal');
+        $this->dispatch('refresh_product');
         $this->reset();
     }
 }

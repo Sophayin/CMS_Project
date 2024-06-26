@@ -97,8 +97,8 @@
                                 <i class="bi bi-pencil-square"></i>
                                 @endif
                             </span>
+                            @error('city_id') <small class="invalid-feedback">{{__($message)}}</small>@enderror
                         </div>
-                        @error('city_id') <small class="invalid-feedback">{{__($message)}}</small>@enderror
                         <div class="col-lg-12">
                             <small class="text-body-secondary fs-7">
                                 {{ $village ? get_translation($village).',' : ''}}
@@ -179,13 +179,12 @@
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <label for="" class="form-label fw-semibold">{{__('Select MFI')}} </label>
-                            <select class="form-select form-select-lg @error('loan_company_id') is-invalid @enderror" wire:change="selectMFI('mfi', $event.target.value)" wire:model="loan_company_id">
+                            <select class="form-select form-select-lg" wire:change="selectMFI('mfi', $event.target.value)" wire:model="loan_company_id" aria-label="Select Product">
                                 <option value="0">{{__('Choose')}}</option>
                                 @foreach ($mfi as $m )
                                 <option value="{{$m->id}}">{{$m->name}}</option>
                                 @endforeach
                             </select>
-                            @error('loan_company_id') <small class="invalid-feedback">{{ __($message) }}</small> @enderror
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <label class="form-label text fw-semibold">{{__('Select CO')}} <small class="text-danger">*</small></label>

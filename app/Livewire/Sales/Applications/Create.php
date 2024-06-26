@@ -32,7 +32,7 @@ class Create extends Component
         $khmer_identity_card, $channel_id, $client_id, $clients;
     public $channels = [];
     public $app_code;
-    public $loan_company_id = 0;
+    public $loan_company_id;
     public $respond_by;
     public $cities = [];
     public $districts = [];
@@ -86,8 +86,7 @@ class Create extends Component
             'city_id.required' => 'The city field is required.',
             'product_price.required' => "The price field is required.",
             'agency_id.required' => "The agency field is required.",
-            'channel_id.required' => "The channel field is required."
-
+            'channel_id.required' => "The channel field is required.",
         ];
     }
 
@@ -127,79 +126,69 @@ class Create extends Component
 
     public function submit()
     {
+        $this->validate();
         $exist = $this->getErrorBag();
         if (Client::where('khmer_identity_card', $this->khmer_identity_card)->exists() && Application::where('khmer_identity_card', $this->khmer_identity_card)->exists()) {
             $exist->add('khmer_identity_card', 'This khmer identity card is already used');
             if ($exist) {
                 return $exist;
             }
-        } else {
-            $this->validate();
-            $clients = new Client();
-            $clients->code = $this->generate_application_code();
-            $clients->channel_id = $this->channel_id;
-            $clients->client_name = $this->client_name;
-            $clients->client_name_translate = $this->client_name_translate;
-            $clients->gender = $this->gender;
-            $clients->phone = $this->phone;
-            $clients->khmer_identity_card = $this->khmer_identity_card;
-            $clients->occupation_id = $this->occupation;
-            $clients->income = $this->income;
-            $clients->shop_id = $this->shop_name;
-            $clients->condition = $this->condition;
-            $clients->product_id = $this->product_id;
-            $clients->product_name = $this->product_name;
-            $clients->product_price = $this->product_price;
-            $clients->guarantor_name = $this->guarantor_name;
-            $clients->guarantor_name_translate = $this->guarantor_name_translate;
-            $clients->guarantor_phone = $this->guarantor_phone;
-            $clients->status = $this->status;
-            $clients->loan_company_id = $this->loan_company_id;
-            $clients->co_id = $this->co_id;
-            $clients->respond_by = $this->respond_by;
-            $clients->client_facebook = $this->client_facebook;
-            $clients->created_by = Auth()->user()->username;
-            $clients->created_at = $this->registration_date . ' ' . date("h:i:s");
-            if ($clients->save()) {
-                $create = new Application();
-                $create->code = $this->generate_application_code();
-                $create->client_id = $clients->id;
-                $create->channel_id = $this->channel_id;
-                $create->client_name = $this->client_name;
-                $create->client_name_translate = $this->client_name_translate;
-                $create->gender = $this->gender;
-                $create->phone = $this->phone;
-                $create->khmer_identity_card = $this->khmer_identity_card;
-                $create->occupation_id = $this->occupation;
-                $create->income = $this->income;
-                $create->shop_id = $this->shop_name;
-                $create->condition = $this->condition;
-                $create->product_id = $this->product_id;
-                $create->product_name = $this->product_name;
-                $create->product_price = $this->product_price;
-                $create->guarantor_name = $this->guarantor_name;
-                $create->guarantor_name_translate = $this->guarantor_name_translate;
-                $create->guarantor_phone = $this->guarantor_phone;
-                $create->status = $this->status;
-                $create->loan_company_id = $this->loan_company_id;
-                $create->co_id = $this->co_id;
-                $create->respond_by = $this->respond_by;
-                $create->client_facebook = $this->client_facebook;
-                $create->created_by = Auth()->user()->username;
-                $create->created_at = $this->registration_date . ' ' . date("h:i:s");
-                if ($create->save()) {
-                    $address = new Address;
-                    $address->city_id = $this->city_id;
-                    $address->district_id = $this->district_id;
-                    $address->commune_id = $this->commune_id;
-                    $address->village_id = $this->village_id;
-                    $address->house_no = $this->house_no;
-                    $address->street_no = $this->street_no;
-                    $address->latitude = $this->latitude;
-                    $address->longitude = $this->longitude;
-                    $address->application_id = $create['id'];
-                    $address->save();
-                }
+        }
+        $clients = new Client();
+        $clients->code = $this->generate_application_code();
+        $clients->client_name = $this->client_name;
+        $clients->client_name_translate = $this->client_name_translate;
+        $clients->gender = $this->gender;
+        $clients->phone = $this->phone;
+        $clients->khmer_identity_card = $this->khmer_identity_card;
+        $clients->occupation_id = $this->occupation;
+        $clients->income = $this->income;
+        $clients->product_id = $this->product_id;
+        $clients->product_name = $this->product_name;
+        $clients->condition = $this->condition;
+        $clients->product_price = $this->product_price;
+        $clients->status = $this->status;
+        $clients->client_facebook = $this->client_facebook;
+        $clients->created_at = $this->registration_date . ' ' . date("h:i:s");
+        if ($clients->save()) {
+            $create = new Application();
+            $create->code = $this->generate_application_code();
+            $create->client_id = $clients->id;
+            $create->client_name = $this->client_name;
+            $create->client_name_translate = $this->client_name_translate;
+            $create->gender = $this->gender;
+            $create->phone = $this->phone;
+            $create->khmer_identity_card = $this->khmer_identity_card;
+            $create->occupation_id = $this->occupation;
+            $create->income = $this->income;
+            $create->shop_id = $this->shop_name;
+            $create->condition = $this->condition;
+            $create->product_id = $this->product_id;
+            $create->product_name = $this->product_name;
+            $create->product_price = $this->product_price;
+            $create->guarantor_name = $this->guarantor_name;
+            $create->guarantor_name_translate = $this->guarantor_name_translate;
+            $create->guarantor_phone = $this->guarantor_phone;
+            $create->status = $this->status;
+            $create->loan_company_id = $this->loan_company_id;
+            $create->channel_id = $this->channel_id;
+            $create->co_id = $this->co_id;
+            $create->respond_by = $this->respond_by;
+            $create->client_facebook = $this->client_facebook;
+            $create->created_by = Auth()->user()->username;
+            $create->created_at = $this->registration_date . ' ' . date("h:i:s");
+            if ($create->save()) {
+                $address = new Address;
+                $address->city_id = $this->city_id;
+                $address->district_id = $this->district_id;
+                $address->commune_id = $this->commune_id;
+                $address->village_id = $this->village_id;
+                $address->house_no = $this->house_no;
+                $address->street_no = $this->street_no;
+                $address->latitude = $this->latitude;
+                $address->longitude = $this->longitude;
+                $address->application_id = $create['id'];
+                $address->save();
             }
         }
         create_transaction_log(__('Created Application') . ' : ' . $this->client_name, 'Created', __('This user created application') . ' ' . $this->client_name . ' ' . __('successfully') . ' ', $this->client_name);
@@ -208,8 +197,11 @@ class Create extends Component
             'message' => __("Application was successfully submitted")
         ]);
         $this->resetExcept('registration_date');
-        $this->reset();
-        $this->dispatch('refresh_application');
+        $this->reset([
+            'khmer_identity_card',
+            'client_name',
+            'client_name_translate'
+        ]);
     }
 
     //   Generate Application Code

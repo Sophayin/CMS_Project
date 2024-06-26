@@ -18,6 +18,7 @@ class UpdateCo extends Component
         $age, $gender, $phone, $phone_telegram, $occupation_id, $loan_company_id,
         $income, $remark;
     public $city_id, $district_id, $commune_id, $village_id, $house_no, $street_no;
+    public $city, $district, $commune, $village;
     public $cities = [], $districts = [], $communes = [], $villages = [];
     public $date_of_birth = [];
     public $getMonth = [], $getDays = [], $getYears = [];
@@ -57,13 +58,17 @@ class UpdateCo extends Component
         $this->loan_company_id = $co->loan_company_id;
         $this->remark = $co->remark;
         if ($co->address) {
-            $this->address = Address::find($co->address->id);
+            $this->address = Address::where('co_id', $this->co_id)->first();
             $this->city_id = $co->address->city_id;
             $this->district_id = $co->address->district_id;
             $this->commune_id = $co->address->commune_id;
             $this->village_id = $co->address->village_id;
             $this->house_no = $co->address->house_no;
             $this->street_no = $co->address->street_no;
+            $this->cities = City::orderBy('name', 'asc')->get();
+            $this->districts = District::where('city_id', $this->city_id)->orderBy('name', 'asc')->get();
+            $this->communes = Commune::where('district_id', $this->district_id)->orderBy('name', 'asc')->get();
+            $this->villages = Village::where('commune_id', $this->commune_id)->orderBy('name', 'asc')->get();
         }
     }
     public function submitUpdateCo()
@@ -83,7 +88,7 @@ class UpdateCo extends Component
         $co->loan_company_id = $this->loan_company_id;
         $co->remark = $this->remark;
         if ($co->save()) {
-            $address = new Address();
+            $address = Address::find($co->address->id);
             $address->city_id = $this->city_id;
             $address->district_id = $this->district_id;
             $address->commune_id = $this->commune_id;
