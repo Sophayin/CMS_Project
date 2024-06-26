@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('file_name')->nullable(true);
             $table->string('type')->nullable(true);
             $table->integer('size')->nullable(true);
-            $table->foreignId('agency_id')->nullable(true);
+            $table->foreignId('user_id')->nullable(true);
             $table->timestamps();
         });
     }

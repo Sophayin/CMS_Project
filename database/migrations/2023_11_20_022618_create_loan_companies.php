@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('name_translate')->nullable(true);;
             $table->string('phone')->nullable(true);
-            $table->string('contact_person')->nullable(true);
             $table->string('telegram')->nullable(true);
             $table->longText('description')->nullable(true);
             $table->boolean('status')->default(true);

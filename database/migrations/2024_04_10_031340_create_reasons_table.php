@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('reasons', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable(true);
-            $table->json('languages')->nullable(true);
+            $table->string('name_translate')->nullable(true);
             $table->string('type')->nullable(true);
             $table->string('description')->nullable(true);
             $table->string('action')->nullable(true);

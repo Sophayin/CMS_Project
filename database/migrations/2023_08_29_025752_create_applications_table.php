@@ -15,12 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique();
             $table->foreignId('shop_id')->nullable(true);
-            $table->string('phone')->nullable(true);
-            $table->string('gender')->nullable(true);
-            $table->string('khmer_identity_card')->nullable(true);
-            $table->string('client_facebook')->nullable(true);
-            $table->string('client_profile')->nullable(true);
-            $table->foreignId('address_id')->nullable(true);
             $table->foreignId('client_id')->nullable(true);
             $table->string('client_name')->nullable(true);
             $table->string('client_name_translate')->nullable(true);
@@ -36,10 +30,11 @@ return new class extends Migration
             $table->string('guarantor_name_translate')->nullable(true);
             $table->string('guarantor_phone')->nullable(true);
             $table->integer('status')->default(1); //[0 =Rejected, 1 = Follow UP, 2 = Approved]
+            $table->string('action')->default(''); //[kick off, pending, accepted]
+
             $table->foreignId('loan_company_id')->default(null);
             $table->string('created_by')->nullable(true);
             $table->string('updated_by')->nullable(true);
-            $table->datetime('registered_date')->nullable(true);
             $table->foreignId('channel_id')->nullable(true);
             $table->timestamps();
         });

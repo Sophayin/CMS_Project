@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('type')->nullable(true);
             $table->string('description')->nullable(true);
             $table->timestamp('viewed_at')->nullable(true);
-            $table->foreignId('agency_id')->nullable(true);
             $table->boolean('is_read')->default(false);
             $table->timestamps();
         });

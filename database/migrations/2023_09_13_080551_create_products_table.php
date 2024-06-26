@@ -19,11 +19,8 @@ return new class extends Migration
             $table->foreignId('brand_id')->nullable();
             $table->string('year_of_manufacture')->nullable(true);
             $table->string('condition')->nullable(true);
-            $table->float('discount', 8, 2)->default(0);
-            $table->string('discount_type')->default(true);
             $table->string('description')->nullable(true);
             $table->float('price', 8, 2)->default(0);
-            $table->foreignId('shop_id')->nullable(true);
             $table->boolean('status')->default(1)->comment('1=active, 2=draft, 2=unpublish');
             $table->timestamps();
         });

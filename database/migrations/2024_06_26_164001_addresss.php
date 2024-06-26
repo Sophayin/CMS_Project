@@ -4,19 +4,16 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAddressTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('addresss', function (Blueprint $table) {
             $table->id();
             $table->string('type')->nullable(true);
-            $table->string('name')->nullable(true);
             $table->foreignId('country_id')->nullable(true);
             $table->foreignId('city_id')->nullable(true);
             $table->foreignId('district_id')->nullable(true);
@@ -28,9 +25,11 @@ class CreateAddressTable extends Migration
             $table->string('longitude')->nullable(true);
             $table->string('remark')->nullable(true);
             $table->foreignId('user_id')->nullable(true);
+            $table->foreignId('client_id')->nullable(true);
             $table->foreignId('shop_id')->nullable(true);
             $table->foreignId('application_id')->nullable(true);
             $table->foreignId('loan_company_id')->nullable(true);
+            $table->foreignId('branch_id')->nullable(true);
             $table->foreignId('co_id')->nullable(true);
             $table->timestamps();
         });
@@ -38,11 +37,10 @@ class CreateAddressTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('addresss');
+        //
     }
-}
+};

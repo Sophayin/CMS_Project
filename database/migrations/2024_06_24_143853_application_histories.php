@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('shop_agencies', function (Blueprint $table) {
+        Schema::create('application_histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('agency_id')->default(null);
-            $table->foreignId('shop_id')->default(null);
-            $table->string('creator')->default(null);
+            $table->foreignId('application_id');
+            $table->foreignId('loan_company_id')->nullable(true);
+            $table->string('respond_by');
+            $table->longText('description')->nullable(true);
+            $table->foreignId('reason_id')->nullable(true);
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('shop_agencies');
+        Schema::dropIfExists('application_histories');
     }
 };

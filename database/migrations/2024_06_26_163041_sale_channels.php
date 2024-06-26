@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('role_users', function (Blueprint $table) {
+        Schema::create('sale_channels', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('role_id');
-            $table->foreignId('user_id');
-            $table->string('model')->nullable(true);
+            $table->foreignId('name')->nullable(true);
+            $table->longText('description')->nullable(true);
+            $table->foreignId('parent_id');
+            $table->timestamps();
         });
     }
 
@@ -24,6 +25,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('role_users');
+        //
+        Schema::dropIfExists('sale_channels');
     }
 };
