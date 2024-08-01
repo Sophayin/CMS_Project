@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class CO extends Model
 {
     use HasFactory;
-    protected $table = 'c_oes';
+    protected $table = 'credit_officers';
     protected $fillable = [
         'id',
         'code',

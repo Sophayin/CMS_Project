@@ -7,7 +7,7 @@ use App\Models\City;
 use App\Models\CO;
 use App\Models\Commune;
 use App\Models\District;
-use App\Models\Loan_company;
+use App\Models\LoanCompany;
 use App\Models\Occupation;
 use App\Models\Village;
 use Livewire\Component;
@@ -135,7 +135,7 @@ class CreateCo extends Component
         for ($year = 1960; $year <= date("Y", strtotime("-10 year", time())); $year++) {
             $this->getYears[] = $year;
         }
-        $this->loan_companies = Loan_company::all();
+        $this->loan_companies = LoanCompany::all();
         $this->occupations = Occupation::all();
         $this->cities = City::orderBy('name', 'asc')->orderBy('name', 'asc')->get();
         $this->districts = District::where('city_id', $this->city_id)->orderBy('name', 'asc')->get();

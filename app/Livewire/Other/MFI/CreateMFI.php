@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Other\MFI;
 
-use App\Models\Loan_company;
+use App\Models\LoanCompany;
 use Livewire\Component;
 
 class CreateMFI extends Component
@@ -26,7 +26,7 @@ class CreateMFI extends Component
     public function createMFI()
     {
         $this->validate();
-        $mfi = new Loan_company();
+        $mfi = new LoanCompany();
         $mfi->name = $this->name;
         $mfi->name_translate = $this->name_translate;
         $mfi->phone = $this->phone;

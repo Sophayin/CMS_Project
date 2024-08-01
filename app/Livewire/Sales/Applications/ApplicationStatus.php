@@ -4,7 +4,7 @@ namespace App\Livewire\Sales\Applications;
 
 use App\Models\Application;
 use App\Models\ApplicationStatus as ModelsApplicationStatus;
-use App\Models\Loan_company;
+use App\Models\LoanCompany;
 use App\Models\Reason;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -101,7 +101,7 @@ class ApplicationStatus extends Component
     public function mount()
     {
         $this->respond_by = Auth::user()->username;
-        $this->loan_companies = Loan_company::all();
+        $this->loan_companies = LoanCompany::all();
         $this->reasons = Reason::all();
         $this->registration_date = date('Y-m-d');
     }

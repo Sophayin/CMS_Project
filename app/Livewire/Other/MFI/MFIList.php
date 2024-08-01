@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Other\MFI;
 
-use App\Models\Loan_company;
+use App\Models\LoanCompany;
 use Livewire\Component;
 
 class MFIList extends Component
@@ -12,7 +12,7 @@ class MFIList extends Component
 
     public function render()
     {
-        $mfi_list = Loan_company::all();
+        $mfi_list = LoanCompany::all();
         return view('livewire.other.m-f-i.m-f-i-list', ['mfi_list' => $mfi_list]);
     }
     public function addMFI()

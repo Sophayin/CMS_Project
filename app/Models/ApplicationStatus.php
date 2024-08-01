@@ -9,20 +9,18 @@ class ApplicationStatus extends Model
 {
 
     use HasFactory;
-    //protected $fillable = [
-    //    'status',
-    //    'respond-by'
-    //];
     protected $table = 'application_statuses';
 
     public function application()
     {
         return $this->belongsTo(Application::class);
     }
+
     public function loan_company()
     {
-        return $this->hasMany(loan_company::class);
+        return $this->hasMany(LoanCompany::class);
     }
+
     public function reason()
     {
         return $this->belongsTo(Reason::class, 'reason_id');

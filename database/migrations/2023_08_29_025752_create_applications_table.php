@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique();
             $table->foreignId('shop_id')->nullable(true);
+            $table->foreignId('branch_id')->nullable(true);
             $table->foreignId('client_id')->nullable(true);
             $table->string('client_name')->nullable(true);
             $table->string('client_name_translate')->nullable(true);
