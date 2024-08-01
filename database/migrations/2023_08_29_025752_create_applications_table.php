@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('guarantor_name')->nullable(true);
             $table->string('guarantor_name_translate')->nullable(true);
             $table->string('guarantor_phone')->nullable(true);
-            $table->integer('status')->default(1); //[0 =Rejected, 1 = Follow UP, 2 = Approved]
+            $table->integer('status')->default(1); //[0 = Rejected, 1 = Follow UP, 2 = Approved]
             $table->string('action')->default(''); //[kick off, pending, accepted]
 
             $table->foreignId('loan_company_id')->default(null);
