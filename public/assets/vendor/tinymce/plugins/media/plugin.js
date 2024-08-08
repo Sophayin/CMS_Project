@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.6.0 (2023-07-12)
+ * TinyMCE version 6.3.2 (2023-02-22)
  */
 
 (function () {
@@ -426,22 +426,6 @@
         allowFullscreen: true
       },
       {
-        regex: /vimeo\.com\/([0-9]+)\?h=(\w+)/,
-        type: 'iframe',
-        w: 425,
-        h: 350,
-        url: 'player.vimeo.com/video/$1?h=$2&title=0&byline=0&portrait=0&color=8dc7dc',
-        allowFullscreen: true
-      },
-      {
-        regex: /vimeo\.com\/(.*)\/([0-9]+)\?h=(\w+)/,
-        type: 'iframe',
-        w: 425,
-        h: 350,
-        url: 'player.vimeo.com/video/$2?h=$3&title=0&amp;byline=0',
-        allowFullscreen: true
-      },
-      {
         regex: /vimeo\.com\/([0-9]+)/,
         type: 'iframe',
         w: 425,
@@ -718,23 +702,9 @@
     const getEditorData = editor => {
       const element = editor.selection.getNode();
       const snippet = isMediaElement(element) ? editor.serializer.serialize(element, { selection: true }) : '';
-      const data = htmlToData(snippet, editor.schema);
-      const getDimensionsOfElement = () => {
-        if (isEmbedIframe(data.source, data.type)) {
-          const rect = editor.dom.getRect(element);
-          return {
-            width: rect.w.toString().replace(/px$/, ''),
-            height: rect.h.toString().replace(/px$/, '')
-          };
-        } else {
-          return {};
-        }
-      };
-      const dimensions = getDimensionsOfElement();
       return {
         embed: snippet,
-        ...data,
-        ...dimensions
+        ...htmlToData(snippet, editor.schema)
       };
     };
     const addEmbedHtml = (api, editor) => response => {
@@ -766,17 +736,9 @@
       selectPlaceholder(editor, beforeObjects);
       editor.nodeChanged();
     };
-    const isEmbedIframe = (url, mediaDataType) => isNonNullable(mediaDataType) && mediaDataType === 'ephox-embed-iri' && isNonNullable(matchPattern(url));
-    const shouldInsertAsNewIframe = (prevData, newData) => {
-      const hasDimensionsChanged = (prevData, newData) => prevData.width !== newData.width || prevData.height !== newData.height;
-      return hasDimensionsChanged(prevData, newData) && isEmbedIframe(newData.source, prevData.type);
-    };
     const submitForm = (prevData, newData, editor) => {
       var _a;
-      newData.embed = shouldInsertAsNewIframe(prevData, newData) && hasDimensions(editor) ? dataToHtml(editor, {
-        ...newData,
-        embed: ''
-      }) : updateHtml((_a = newData.embed) !== null && _a !== void 0 ? _a : '', newData, false, editor.schema);
+      newData.embed = updateHtml((_a = newData.embed) !== null && _a !== void 0 ? _a : '', newData, false, editor.schema);
       if (newData.embed && (prevData.source === newData.source || isCached(newData.source))) {
         handleInsert(editor, newData.embed);
       } else {
@@ -805,12 +767,8 @@
         const dataFromEmbed = htmlToData((_a = data.embed) !== null && _a !== void 0 ? _a : '', editor.schema);
         api.setData(wrap(dataFromEmbed));
       };
-      const handleUpdate = (api, sourceInput, prevData) => {
-        const dialogData = unwrap(api.getData(), sourceInput);
-        const data = shouldInsertAsNewIframe(prevData, dialogData) && hasDimensions(editor) ? {
-          ...dialogData,
-          embed: ''
-        } : dialogData;
+      const handleUpdate = (api, sourceInput) => {
+        const data = unwrap(api.getData(), sourceInput);
         const embed = dataToHtml(editor, data);
         api.setData(wrap({
           ...data,
@@ -912,7 +870,7 @@
           case 'dimensions':
           case 'altsource':
           case 'poster':
-            handleUpdate(api, detail.name, currentData.get());
+            handleUpdate(api, detail.name);
             break;
           }
           currentData.set(unwrap(api.getData()));
@@ -1093,13 +1051,8 @@
     };
 
     const parseAndSanitize = (editor, context, html) => {
-      const getEditorOption = editor.options.get;
-      const sanitize = getEditorOption('xss_sanitization');
       const validate = shouldFilterHtml(editor);
-      return Parser(editor.schema, {
-        sanitize,
-        validate
-      }).parse(html, { context });
+      return Parser(editor.schema, { validate }).parse(html, { context });
     };
 
     const setup$1 = editor => {
@@ -1183,16 +1136,6 @@
       });
     };
 
-    const onSetupEditable = editor => api => {
-      const nodeChanged = () => {
-        api.setEnabled(editor.selection.isEditable());
-      };
-      editor.on('NodeChange', nodeChanged);
-      nodeChanged();
-      return () => {
-        editor.off('NodeChange', nodeChanged);
-      };
-    };
     const register = editor => {
       const onAction = () => editor.execCommand('mceMedia');
       editor.ui.registry.addToggleButton('media', {
@@ -1202,19 +1145,13 @@
         onSetup: buttonApi => {
           const selection = editor.selection;
           buttonApi.setActive(isMediaElement(selection.getNode()));
-          const unbindSelectorChanged = selection.selectorChangedWithUnbind('img[data-mce-object],span[data-mce-object],div[data-ephox-embed-iri]', buttonApi.setActive).unbind;
-          const unbindEditable = onSetupEditable(editor)(buttonApi);
-          return () => {
-            unbindSelectorChanged();
-            unbindEditable();
-          };
+          return selection.selectorChangedWithUnbind('img[data-mce-object],span[data-mce-object],div[data-ephox-embed-iri]', buttonApi.setActive).unbind;
         }
       });
       editor.ui.registry.addMenuItem('media', {
         icon: 'embed',
         text: 'Media...',
-        onAction,
-        onSetup: onSetupEditable(editor)
+        onAction
       });
     };
 

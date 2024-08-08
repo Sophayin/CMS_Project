@@ -3,7 +3,7 @@
         <form wire:submit.prevent="edit">
             <div class="d-flex pl-3">
                 <h6 class="main_application mt-1">
-                    <a wire:navigate href="{{route('sale.list', 'application')}}"><i class="bi bi-arrow-left-circle-fill"></i> {{__('Back')}} </a>
+                    <a wire:navigate href="{{route('application.list')}}"><i class="bi bi-arrow-left-circle-fill"></i> {{__('Back')}} </a>
                 </h6>
                 <h6 class="main_application mt-1">
                     <i class="bi bi-chevron-right"></i>

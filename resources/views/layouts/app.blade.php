@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', $lang ?? app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8" />
@@ -28,10 +28,10 @@
     <link href="{{asset('assets/lib/css/bootstrap-datepicker.min.css')}}" rel="stylesheet" />
     <link href="{{asset('assets/lib/css/bootstrap-datepicker3.min.css')}}" rel="stylesheet" />
     @livewireStyles
-
 </head>
 
 <body>
+
     <!-- Template Main JS File -->
     <script src="{{asset('assets/lib/js/query-3.7.1.min.js')}}"></script>
     <script src="{{asset('assets/js/select2.min.js')}}"></script>
@@ -58,10 +58,10 @@
         @include("layouts.navbars.sidebar")
         @yield('content')
         {{ $slot }}
-
     </main>
-    @livewireScripts
-    @stack('scripts')
 </body>
+
+@livewireScripts
+@stack('scripts')
 
 </html>

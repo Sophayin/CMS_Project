@@ -88,8 +88,9 @@ class Update extends Component
         $this->co = CO::where('loan_company_id', $this->loan_company_id)->orderBy('full_name', 'asc')->get();
     }
 
-    public function mount()
+    public function mount($id)
     {
+        $this->application_id = $id;
         $application = Application::find($this->application_id);
         $this->code = $application->code;
         $this->channel_id = $application->channel_id;

@@ -10,7 +10,7 @@
                         <div class="p-2">
                             <div class="col-lg-12 col-sm-6">
                                 <a wire:click="downloadChannel">
-                                    <button class="btn btn-secondary button_save">
+                                    <button class="btn btn-secondary button_save" style="font-size: 14px;">
                                         <i class="bi bi-box-arrow-up"></i>
                                         {{__('Download Channels')}}
                                     </button>
@@ -20,7 +20,7 @@
                         <div class="p-2">
                             <div class="col-lg-12 col-sm-6">
                                 <a wire:click="downloadCO">
-                                    <button class="btn btn-secondary button_save">
+                                    <button class="btn btn-secondary button_save" style="font-size: 14px;">
                                         <i class="bi bi-box-arrow-up"></i>
                                         {{__('Download CO')}}
                                     </button>
@@ -30,7 +30,7 @@
                         <div class="p-2">
                             <div class="col-lg-12 col-sm-6">
                                 <a wire:click="downloadMFI">
-                                    <button class="btn btn-secondary button_save">
+                                    <button class="btn btn-secondary button_save" style="font-size: 14px;">
                                         <i class="bi bi-box-arrow-up"></i>
                                         {{__('Download MFI')}}
                                     </button>
@@ -40,7 +40,7 @@
                         <div class="p-2">
                             <div class="col-lg-12 col-sm-6">
                                 <a wire:click="downloadProduct">
-                                    <button class="btn btn-secondary button_save">
+                                    <button class="btn btn-secondary button_save" style="font-size: 14px;">
                                         <i class="bi bi-box-arrow-up"></i>
                                         {{__('Download Product')}}
                                     </button>
@@ -50,7 +50,7 @@
                         <div class="p-2">
                             <div class="col-lg-12 col-sm-6">
                                 <a wire:click="downloadShop">
-                                    <button class="btn btn-secondary button_save">
+                                    <button class="btn btn-secondary button_save" style="font-size: 14px;">
                                         <i class="bi bi-box-arrow-up"></i>
                                         {{__('Download Shop')}}
                                     </button>
@@ -60,7 +60,7 @@
                         <div class="p-2">
                             <div class="col-lg-12 col-sm-6">
                                 <a wire:click="downlaodExcelFile">
-                                    <button class="btn btn-secondary button_save">
+                                    <button class="btn btn-secondary button_save" style="font-size: 14px;">
                                         <i class="bi bi-box-arrow-up"></i>
                                         {{__('Download Sample Excel')}}
                                     </button>

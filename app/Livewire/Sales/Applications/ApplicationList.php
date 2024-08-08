@@ -75,7 +75,7 @@ class ApplicationList extends Component
     public function btn_add_application()
     {
         if (in_array('Create Application', session('user_permission')['Application'])) {
-            $this->redirect(route('sale.list', 'application?action=create'));
+            $this->redirect(route('application.create'));
         } else {
             $this->dispatch("alert.message", [
                 'type' => 'warning',
@@ -87,7 +87,7 @@ class ApplicationList extends Component
     public function btn_edit_application($application_id)
     {
         if (in_array('Edit Application', session('user_permission')['Application'])) {
-            $this->redirect(route('sale.list', 'application?action=update&application_id=' . $application_id));
+            $this->redirect(route('application.update', ['id' => $application_id]));
         } else {
             $this->dispatch("alert.message", [
                 'type' => 'warning',
@@ -98,7 +98,7 @@ class ApplicationList extends Component
     public function btn_preview_application($application_id)
     {
         if (in_array('Preview Application', session('user_permission')['Application'])) {
-            $this->redirect(route('sale.list', 'application?action=view&application_id=' . $application_id), navigate: true);
+            $this->redirect(route('application-view', ['id' => $application_id]), navigate: true);
         } else {
             $this->dispatch("alert.message", [
                 'type' => 'warning',
@@ -150,7 +150,7 @@ class ApplicationList extends Component
 
     public function import_application()
     {
-        $this->redirect(route('sale.list', 'application?action=import'));
+        $this->redirect(route('sale.import'));
     }
     public $duplicate_app;
     public function duplicate_application($id)

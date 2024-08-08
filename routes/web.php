@@ -1,5 +1,6 @@
 <?php
 
+use App\Imports\ImportApplicationFile;
 use App\Livewire\Agency\Create;
 use App\Livewire\Agency\ManageAgency;
 use App\Livewire\Agency\Register\AgencyRegister;
@@ -32,15 +33,21 @@ use App\Livewire\Report\Finance\SalaryReport;
 use App\Livewire\Report\Finance\SaleCommissionReport;
 use App\Livewire\Report\ManageReport;
 use App\Livewire\Report\SalePerformanceByChannel;
+use App\Livewire\Sales\Applications\ApplicationList;
 use App\Livewire\Sales\Applications\ApplicationStatus;
 use App\Livewire\Sales\Applications\Create as ApplicationsCreate;
+use App\Livewire\Sales\Applications\ImportFileApplication;
 use App\Livewire\Sales\Applications\Update as ApplicationsUpdate;
 use App\Livewire\Sales\ManageSale;
 use App\Livewire\Sales\Sale\Preview;
+use App\Livewire\Sales\Sale\SaleList;
 use App\Livewire\Setting\ExchangeRate;
 use App\Livewire\Setting\ManageSetting;
+use App\Livewire\Test\TestList;
 use App\Livewire\Users\ManageUser;
 use App\Livewire\Users\Role\RoleApplyPermission;
+use App\Livewire\Users\Role\RoleList;
+use App\Livewire\Users\Staff\StaffList;
 use App\Livewire\Users\Staff\UserProfile;
 use App\Models\Occupation;
 use Illuminate\Support\Facades\Route;
@@ -66,13 +73,16 @@ Route::middleware('auth', 'route_permission')->group(function () {
 
   Route::GET('/user/role-apply-permission/{role_id}', RoleApplyPermission::class)->name('role.apply_permission');
   Route::GET('/', Dashboard::class)->name('dashboard');
-  Route::GET('/user/{slug}', ManageUser::class)->name('user.list');
+  Route::GET('/user/list', StaffList::class)->name('user-list');
+  Route::GET('/user/role', RoleList::class)->name('role-list');
   Route::GET('/user/role-apply-permission/{role_id}', RoleApplyPermission::class)->name('role.apply_permission');
-  Route::GET('/sale/{slug}', ManageSale::class)->name('sale.list');
+  Route::GET('/sale/application', ApplicationList::class)->name('application.list');
+  Route::GET('/sale/list', SaleList::class)->name('sale.list');
+  Route::GET('/sale/application/import', ImportFileApplication::class)->name('sale.import');
   Route::GET('/sale/application/create', ApplicationsCreate::class)->name('application.create');
   Route::POST('sale/applciation/create-status/{id}', ApplicationStatus::class)->name("application.create-status");
-  Route::GET('/sale/application-update/{id}', ApplicationsUpdate::class)->name('application.update');
-  Route::GET('/application-view/{id}', ViewApplication::class)->name('application-view');
+  Route::GET('/sale/application/application-update/{id}', ApplicationsUpdate::class)->name('application.update');
+  Route::GET('/sale/application/application-view/{id}', ViewApplication::class)->name('application-view');
   Route::get('sales/preview', Preview::class)->name('sale.preview');
 
   Route::GET('/report/{slug}', ManageReport::class)->name('report');
