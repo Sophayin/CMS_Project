@@ -2,18 +2,18 @@
     <section class="section">
         <form wire:submit="submit">
             <div class="d-flex">
-                <h6 class="main_application mt-1">
-                    <a wire:navigate href="{{route('sale.list', 'application')}}"><i class="bi bi-arrow-left-circle-fill"></i> {{__('Back')}}</a>
+                <h6 class="main_application mt-1 p-1 ">
+                    <a wire:navigate href="{{route('application.list')}}"><i class="bi bi-arrow-left-circle-fill"></i> {{__('Back')}}</a>
                 </h6>
-                <h6 class="main_application mt-1">
+                <h6 class="main_application mt-1 p-1">
                     <i class="bi bi-chevron-right"></i>
                 </h6>
-                <h6 class="main_application mt-1">{{__('Applications')}}</h6>
-                <h6 class="main_application mt-1">
+                <h6 class="main_application mt-1 p-1">{{__('Applications')}}</h6>
+                <h6 class="main_application mt-1 p-1">
                     <i class="bi bi-chevron-right"></i>
                 </h6>
-                <h6 class="main_application mt-1">{{__('New')}}</h6>
-                <button type="submit" class="btn btn-primary button_save">{{__('Save')}}</button>
+                <h6 class="main_application mt-1 p-1">{{__('New')}}</h6>
+                <button type="submit" class="btn btn-primary ">{{__('Save')}}</button>
             </div>
             <div class="card mt-3">
                 <div class="card-body">

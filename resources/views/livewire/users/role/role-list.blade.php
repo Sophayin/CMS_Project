@@ -38,7 +38,6 @@
                                     <td class="text-sm">{{$item->description}}</td>
                                     <td class="text-sm">{{$item->status ? __("Active") : __("Inactive")}}</td>
                                     <td class="text-center">
-                                        <!--href="{{route('user.list', 'role?apply=role-apply-permission&role_id='.$item->id)}}" -->
                                         <a style="border-color:azure;" wire:click="apply_role_permission({{$item->id}})" class="rounded-pill btn btn-sm btn-outline-secondary">
                                             <svg width="16px" height="18px" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M10.0489 6.28202C10.2929 6.28202 10.5298 6.31073 10.7667 6.34662V2.88693L5.38333 0.539795L0 2.88693V6.41122C0 9.66993 2.29689 12.7205 5.38333 13.4598C5.77811 13.3665 6.15854 13.2301 6.53178 13.065C6.03651 12.3616 5.74222 11.5074 5.74222 10.5887C5.74222 8.21284 7.67305 6.28202 10.0489 6.28202Z" fill="currentColor"></path>

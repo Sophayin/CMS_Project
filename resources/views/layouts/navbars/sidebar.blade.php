@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Department;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 if (Auth::user()->role_user) {
     $role_id = Auth::user()->role_user->role_id;
@@ -22,19 +24,40 @@ $getDepartment = DB::table("departments")
     ->orderBy('departments.sort', 'asc')
     ->get();
 ?>
+
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
         @foreach ($getDepartment as $depart)
-        <?php $children = Department::where('parent_id', $depart->id)->whereHas('role_permission', function ($q) use ($role_id) {
-            $q->where("role_id", $role_id);
-        })->first(); ?>
+        <?php
+        $children = Department::where('parent_id', $depart->id)
+            ->whereHas('role_permission', function ($q) use ($role_id) {
+                $q->where("role_id", $role_id);
+            })
+            ->get();
+        $isParentActive = request()->is(trim($depart->slug, '/') . '/*') || request()->is(trim($depart->slug, '/'));
+        $isAnyChildActive = $children->contains(function ($child) {
+            return request()->is(trim($child->slug, '/') . '/*') || request()->is(trim($child->slug, '/'));
+        });
+        $isActive = $isParentActive || $isAnyChildActive;
+        ?>
         <li class="nav-item">
-            <a class="nav-link {{ strcmp($depart->slug, '/' . Request::segment(1)) ? 'collapsed' : '' }}" @if(Request::is('/')) href="{{$children->slug ?? ''}}" @else wire:navigate href="{{$children->slug ?? ''}}" @endif>
-                <div style="width:19px; margin-right:12px;">
-                    <span style="position: relative;top: -2px;">{!! $depart->icon !!}</span>
-                </div>
-                <span>{{get_translation($depart)}} </span>
+            @if ($children->count())
+            <a class="nav-link {{ $isActive ? '' : 'collapsed' }}" data-bs-target="#{{ 'department-'.$depart->id }}" data-bs-toggle="collapse" href="#">
+                <span style="position: relative;top: -2px;">{!! $depart->icon !!}</span>
+                <span>{{ get_translation($depart) }}</span>
+                <i class="bi bi-chevron-down ms-auto"></i>
             </a>
+            <ul id="{{ 'department-'.$depart->id }}" class="nav-content collapse {{ $isActive ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+                @foreach ($children as $child)
+                <li class="nav-item">
+                    <a href="{{ url($child->slug) }}" class="{{ request()->is(trim($child->slug, '/') . '/*') || request()->is(trim($child->slug, '/')) ? 'active' : '' }}">
+                        <i class="bi bi-circle"></i>
+                        <span>{{ get_translation($child) }}</span>
+                    </a>
+                </li>
+                @endforeach
+            </ul>
+            @endif
         </li>
         @endforeach
     </ul>

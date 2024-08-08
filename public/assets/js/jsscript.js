@@ -27,6 +27,7 @@ window.addEventListener("alert.message", (event) => {
 
 //START OPEN MODAL POPUP
 window.addEventListener("modal.openModal", (event) => {
+    console.log('Hello');
     $("#openModal").modal("show");
 });
 // CLOSED MODAL OPEN FORM
