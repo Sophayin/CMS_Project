@@ -692,6 +692,10 @@ transition-duration: 500ms;
   width: 100%;
   overflow: auto;
 }
+.form-check-input {
+  height: 18px !important;
+  width: 18px !important;
+}
 
 
 

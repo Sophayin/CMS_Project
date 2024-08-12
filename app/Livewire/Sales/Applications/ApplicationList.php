@@ -4,6 +4,7 @@ namespace App\Livewire\Sales\Applications;
 
 use App\Models\Application;
 use App\Models\Channel;
+use App\Models\Client;
 use App\Models\Shop;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -44,14 +45,18 @@ class ApplicationList extends Component
             $applications->whereIn('shop_id', $shopIds);
         }
         if ($this->search) {
-            $applications = $applications->where('client_name', 'ilike', '%' . $this->search . '%')
-                ->orWhere('code', 'ilike', '%' . $this->search . '%')
-                ->orWhere('khmer_identity_card', 'ilike', '%' . $this->search . '%')
-                ->orWhere('client_name_translate', 'ilike', '%' . $this->search . '%')
-                ->orWhere('phone', 'ilike', '%' . $this->search . '%')
-                ->whereHas('shop', function ($q) {
-                    $q->orWhere('shop_name', 'ilike', '%' . $this->search . '%');
+            $applications->where(function ($query) use ($shopIds) {
+                $query->where(function ($q) {
+                    $q->where('client_name', 'ilike', '%' . $this->search . '%')
+                        ->orWhere('code', 'ilike', '%' . $this->search . '%')
+                        ->orWhere('khmer_identity_card', 'ilike', '%' . $this->search . '%')
+                        ->orWhere('client_name_translate', 'ilike', '%' . $this->search . '%')
+                        ->orWhere('phone', 'ilike', '%' . $this->search . '%')
+                        ->orWhereHas('shop', function ($q) {
+                            $q->where('shop_name', 'ilike', '%' . $this->search . '%');
+                        });
                 });
+            });
         }
         if ($this->shop_id) {
             $applications = $applications->where('shop_id', $this->shop_id);
@@ -152,7 +157,7 @@ class ApplicationList extends Component
     {
         $this->redirect(route('sale.import'));
     }
-    public $duplicate_app;
+    public $duplicate_app = [];
     public function duplicate_application($id)
     {
         $application = new Create();

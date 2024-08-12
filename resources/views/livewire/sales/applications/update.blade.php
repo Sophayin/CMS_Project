@@ -179,7 +179,7 @@
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <label class="form-label text fw-semibold">{{__('Select CO')}} <small class="text-danger">*</small></label>
-                            <select wire:model="co_id" class="form-select @error('agency_id') is-invalid @enderror" id="selectedByAgency" style="width: 100%;">
+                            <select wire:model="co_id" class="form-select @error('co_id') is-invalid @enderror" id="selectedByAgency" style="width: 100%;">
                                 <option value="">--{{__('Choose')}}--</option>
                                 @foreach ($co as $c )
                                 <option value="{{$c->id}}">{{$c->full_name}}</option>
@@ -215,18 +215,6 @@
                         <div class="col-lg-12">
                             <small class="text-body-secondary fs-7">{{__('Phone Number')}} : </small>
                             <small class=" text-body-secondary fs-7">{{$guarantor_phone ?? ''}}</small> <br>
-                        </div>
-                        @endif
-                    </div>
-                    <!-- Social media -->
-                    <div class="row mt-3">
-                        <span wire:click="mediaShow" class="p-2 w-100 fw-semibold" style="color: #034c72;">
-                            <i class="bi bi-plus-circle"></i> {{__('Social Media')}}
-                        </span>
-                        @if($client_facebook_name)
-                        <div class="col-lg-4 col-md-6 col-sm-12">
-                            <label class="form-label text fw-semibold">{{__('Facebook')}}</label>
-                            <input type="text" class="form-control " wire:model="client_facebook" placeholder="{{trans('translations.enter')}}" value="{{old('client_facebook')}}">
                         </div>
                         @endif
                     </div>

@@ -31,7 +31,6 @@ class CreateMFI extends Component
         $mfi->name_translate = $this->name_translate;
         $mfi->phone = $this->phone;
         $mfi->telegram = $this->telegram;
-        $mfi->contact_person = $this->contact_person;
         $mfi->description = $this->description;
         $mfi->save();
         create_transaction_log(__('Created MFI') . ' : ' . $this->name, 'Created', __('This user created MFI') . ' ' . $this->name . ' ' . __('successfully') . ' ', $this->name);

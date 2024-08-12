@@ -600,6 +600,7 @@
     "Select MFI": "ជ្រើសរើសគ្រឹះស្ថានមីក្រូហិរញ្ញវត្ថុ",
     "Select CO": "ជ្រើសរើសមន្ត្រីឥណទាន",
     "The Code already exists": "កូដនេះមានរួលរាល់",
-    "The loan company field is required.": "ទាមទារជ្រើសរើសក្រុមហ៊ុនកម្ចី"
+    "The loan company field is required.": "ទាមទារជ្រើសរើសក្រុមហ៊ុនកម្ចី",
+    "The co field is required.": "ទាមទារជ្រើសរើសមន្ត្រីឥណទាន"
 
 }

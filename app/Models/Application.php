@@ -11,8 +11,14 @@ class Application extends Model
     use HasFactory;
 
     protected $fillable = [
-        'agency_name', 'shop_name', 'client_name', 'client_name_translate', 'approved_by',
-        'product_price', 'phone', 'product_title'
+        'agency_name',
+        'shop_name',
+        'client_name',
+        'client_name_translate',
+        'approved_by',
+        'product_price',
+        'phone',
+        'product_title'
     ];
 
     public function address()
@@ -37,7 +43,7 @@ class Application extends Model
     }
     public function loan_company()
     {
-        return $this->belongsTo(Loan_company::class);
+        return $this->belongsTo(LoanCompany::class);
     }
     public function reason()
     {

@@ -22,7 +22,6 @@ class UpdateMFI extends Component
         $this->name_translate = $mfi->name_translate;
         $this->phone = $mfi->phone;
         $this->telegram = $mfi->telegram;
-        $this->contact_person = $mfi->contact_person;
         $this->description = $mfi->description;
     }
     public function submit_update_MFI()
@@ -32,7 +31,6 @@ class UpdateMFI extends Component
         $mfi->name_translate = $this->name_translate;
         $mfi->phone = $this->phone;
         $mfi->telegram = $this->telegram;
-        $mfi->contact_person = $this->contact_person;
         $mfi->description = $this->description;
         $mfi->save();
         create_transaction_log(__('updated MFI') . ' : ' . $this->name, 'Updated', __('This user updated MFI') . ' ' . $this->name . ' ' . __('successfully') . ' ', $this->name);

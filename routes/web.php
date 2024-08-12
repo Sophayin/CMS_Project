@@ -33,6 +33,8 @@ use App\Livewire\Report\Finance\SalaryReport;
 use App\Livewire\Report\Finance\SaleCommissionReport;
 use App\Livewire\Report\ManageReport;
 use App\Livewire\Report\SalePerformanceByChannel;
+use App\Livewire\Report\SaleSummaryReport;
+use App\Livewire\Report\ShopPeformanceReport;
 use App\Livewire\Sales\Applications\ApplicationList;
 use App\Livewire\Sales\Applications\ApplicationStatus;
 use App\Livewire\Sales\Applications\Create as ApplicationsCreate;
@@ -75,7 +77,7 @@ Route::middleware('auth', 'route_permission')->group(function () {
   Route::GET('/', Dashboard::class)->name('dashboard');
   Route::GET('/user/list', StaffList::class)->name('user-list');
   Route::GET('/user/role', RoleList::class)->name('role-list');
-  Route::GET('/user/role-apply-permission/{role_id}', RoleApplyPermission::class)->name('role.apply_permission');
+  Route::GET('/user/role/role-apply-permission/{role_id}', RoleApplyPermission::class)->name('role.apply_permission');
   Route::GET('/sale/application', ApplicationList::class)->name('application.list');
   Route::GET('/sale/list', SaleList::class)->name('sale.list');
   Route::GET('/sale/application/import', ImportFileApplication::class)->name('sale.import');
@@ -85,8 +87,10 @@ Route::middleware('auth', 'route_permission')->group(function () {
   Route::GET('/sale/application/application-view/{id}', ViewApplication::class)->name('application-view');
   Route::get('sales/preview', Preview::class)->name('sale.preview');
 
-  Route::GET('/report/{slug}', ManageReport::class)->name('report');
-  Route::GET('/report/Sale Summary Report by Company', SalePerformanceByChannel::class)->name('report.Sale Summary Report by Company');
+  // Route::GET('/report/{slug}', ManageReport::class)->name('report');
+  Route::GET('/report/sale-summary-report', SaleSummaryReport::class)->name('sale-summary-report');
+  Route::GET('/report/sale-performance-by-channel', SalePerformanceByChannel::class)->name('report.sale-performance-by-channel');
+  Route::GET('/report/shop-performance-report', ShopPeformanceReport::class)->name('sale-performance-report');
   Route::GET('/setting/{slug}', ManageSetting::class)->name('setting.language');
 
   Route::GET('/notification', Notification::class)->name('notification');

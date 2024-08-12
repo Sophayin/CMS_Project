@@ -30,7 +30,7 @@ class DepartmentSeeder extends Seeder
                         'name' => 'Dashboard',
                         'slug' => '/',
                         'type'  => 'dashboard',
-                        'language' => ['lang' => 'kh', 'name' => 'អ្នកប្រើ'],
+                        'language' => ['lang' => 'kh', 'name' => 'ផ្ទាំងគ្រប់គ្រង'],
                         'description' => 'user management',
                         'status' => true,
                         'type' => '',

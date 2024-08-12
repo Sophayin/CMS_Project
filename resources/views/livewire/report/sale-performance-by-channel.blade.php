@@ -1,3 +1,5 @@
 <div>
-    <h1>Hello Report</h1>
+    <div class="card">
+        <h1>Hello Sale Performance By Channel</h1>
+    </div>
 </div>
