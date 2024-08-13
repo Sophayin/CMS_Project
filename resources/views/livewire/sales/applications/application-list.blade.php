@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-end">
-                <div class="p-2">
+                <!-- <div class="p-2">
                     <div class="col-lg-12 col-sm-6">
                         <a wire:click="import_application">
                             <button class="btn btn-secondary">
@@ -35,7 +35,7 @@
                             </button>
                         </a>
                     </div>
-                </div>
+                </div> -->
                 <div class="p-2">
                     <div class="col-lg-12 col-sm-6">
                         <a wire:click="btn_add_application">

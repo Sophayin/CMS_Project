@@ -56,7 +56,7 @@ class RoleList extends Component
     public function apply_role_permission($role_id)
     {
         if (in_array('Set Permission', session('user_permission')['Role'])) {
-            $this->redirect(route('user.list', 'role?apply=role-apply-permission&role_id=' . $role_id), navigate: true);
+            $this->redirect(route('role.apply_permission', ['role_id' => $role_id]), navigate: true);
         } else {
             $this->dispatch("alert.message", [
                 'type' => 'warning',

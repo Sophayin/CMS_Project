@@ -47,8 +47,12 @@
                                     <td class="text-sm">{{$item->shop_name_translate}}</td>
                                     <td class="text-sm">{{$item->post_code}}</td>
                                     <td class="text-sm">{{$item->code}}</td>
-                                    <td class="text-sm">{{$item->phone}}</td>
-                                    <td class="text-sm">{{$item->telephone}}</td>
+                                    <td class="text-sm">
+                                        <nobr>{{$item->phone}}</nobr>
+                                    </td>
+                                    <td class="text-sm">
+                                        <nobr>{{$item->telephone}}</nobr>
+                                    </td>
                                     <td class="text-center">
                                         <a style="border-color:transparent;" wire:click="get_edit_shop({{$item->id}})" class="rounded-pill btn btn-sm btn btn-outline-success">
                                             <i class="bi bi-pencil-square"></i>

@@ -32,7 +32,7 @@ class MFIList extends Component
     public function confirmDelete()
     {
         if ($this->mfiId) {
-            $mfi = Loan_company::findOrFail($this->mfiId);
+            $mfi = LoanCompany::findOrFail($this->mfiId);
             $mfi->delete();
             create_transaction_log(__('Delete mfi') . ' : ' . $mfi->name, 'Delete', __('This user delete mfi') . ' ' . $mfi->name . ' ' . __('successfully') . ' ', $mfi->name);
             $this->dispatch('modal.closeDelete');

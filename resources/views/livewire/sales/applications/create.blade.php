@@ -188,12 +188,13 @@
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <label class="form-label text fw-semibold">{{__('Select CO')}} <small class="text-danger">*</small></label>
-                            <select wire:model="co_id" class="form-select" id="selectedco" style="width: 100%;">
+                            <select wire:model="co_id" class="form-select @error('co_id') is-invalid @enderror" id="selectedco" style="width: 100%;">
                                 <option value="">--{{__('Choose')}}--</option>
                                 @foreach ($co as $c )
                                 <option value="{{$c->id}}">{{$c->full_name}}</option>
                                 @endforeach
                             </select>
+                            @error('co_id') <small class="text-danger">{{__($message)}}</small> @enderror
                         </div>
                     </div>
                     <!-- Guarantor_section -->
@@ -218,17 +219,6 @@
                             <small class="text-body-secondary fs-7">{{__('Phone Number')}}: {{$guarantor_phone}}</small>
                             @endif
                         </div>
-                    </div>
-                    <div class="row mt-3">
-                        <span wire:click="mediaShow" class="pointer p-2 w-100 fw-semibold" style="color: #034c72;">
-                            <i class="bi bi-plus-circle"></i> {{__('Social Media')}}
-                        </span>
-                        @if($facebook)
-                        <div class="col-lg-4 col-md-6 col-sm-12">
-                            <label class="form-label text fw-semibold">{{__('Facebook')}}</label>
-                            <input type="text" class="form-control " wire:model="client_facebook" placeholder="{{__('Enter')}}">
-                        </div>
-                        @endif
                     </div>
                 </div>
             </div>

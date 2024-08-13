@@ -28,11 +28,6 @@
                             <input type="text" wire:model="telegram" class="form-control @error('telegram') is-invalid @enderror" placeholder="{{__('Telegram')}}">
                             @error('telegram') <small class="invalid-feedback">{{__($message)}}</small> @enderror
                         </div>
-                        <div class="col-4 mb-3">
-                            <label class="text fw-semibold">{{__('Contact Person')}}</label>
-                            <input type="text" wire:model="contact_person" class="form-control @error('contact_person') is-invalid @enderror" placeholder="{{__('Contact Person')}}">
-                            @error('contact_person') <small class="invalid-feedback">{{__($message)}}</small> @enderror
-                        </div>
                         <div class="col-lg-8 col-md-6 col-sm-12">
                             <label class="form-label text fw-semibold">{{__('Description')}} </label>
                             <textarea type="text" class="form-control" wire:model="description" placeholder="{{__('Type here...')}}"></textarea>

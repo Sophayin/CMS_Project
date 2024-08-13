@@ -21,6 +21,9 @@ return new class extends Migration
             $table->string('client_name_translate')->nullable(true);
             $table->foreignId('occupation_id')->nullable(true);
             $table->string('income')->nullable(true);
+            $table->string('gender')->nullable(true);
+            $table->string('phone')->nullable(true);
+            $table->string('khmer_identity_card')->nullable(true);
             $table->foreignId('co_id')->nullable(true);
             $table->foreignId('product_id')->nullable(true);
             $table->string('product_name')->nullable(true);
@@ -32,7 +35,6 @@ return new class extends Migration
             $table->string('guarantor_phone')->nullable(true);
             $table->integer('status')->default(1); //[0 = Rejected, 1 = Follow UP, 2 = Approved]
             $table->string('action')->default(''); //[kick off, pending, accepted]
-
             $table->foreignId('loan_company_id')->default(null);
             $table->string('created_by')->nullable(true);
             $table->string('updated_by')->nullable(true);

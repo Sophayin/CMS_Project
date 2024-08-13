@@ -69,6 +69,7 @@ class CreateCo extends Component
             $co->income = $this->income;
             $co->loan_company_id = $this->loan_company_id;
             $co->remark = $this->remark;
+            $co->branch_id = '1';
             if ($co->save()) {
                 $address = new Address();
                 $address->city_id = $this->city_id;

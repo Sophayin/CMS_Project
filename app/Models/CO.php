@@ -43,7 +43,7 @@ class CO extends Model
     }
     public function loan_company()
     {
-        return $this->belongsTo(Loan_company::class);
+        return $this->belongsTo(LoanCompany::class);
     }
     public function address()
     {

@@ -12,6 +12,7 @@ use App\Models\CO;
 use App\Models\Commune;
 use App\Models\District;
 use App\Models\Loan_company;
+use App\Models\LoanCompany;
 use App\Models\Occupation;
 use App\Models\Product;
 use App\Models\Shop;
@@ -54,15 +55,12 @@ class Create extends Component
     public $applicationstatus = '';
     public $house_no, $street_no;
     public $leader;
-    public $facebook = false;
     public $code;
     public $registration_date;
     public $mfi = [];
     public $co = [];
     public $filteredCo = [];
     public $co_id;
-
-
 
     protected $listeners = ['onChange'];
     protected $rules = [
@@ -76,6 +74,7 @@ class Create extends Component
         'product_price' => 'required',
         'city_id' => 'required',
         'channel_id' => 'required',
+        'co_id' => 'required',
     ];
     public function messages()
     {
@@ -87,6 +86,8 @@ class Create extends Component
             'product_price.required' => "The price field is required.",
             'agency_id.required' => "The agency field is required.",
             'channel_id.required' => "The channel field is required.",
+            'co_id.required' => "The co field is required.",
+
         ];
     }
 
@@ -105,7 +106,7 @@ class Create extends Component
     public function mount()
     {
         $this->registration_date = date('Y-m-d');
-        $this->mfi = Loan_company::all();
+        $this->mfi = LoanCompany::all();
         $shopIds = auth()->user()->shops->pluck('id')->toArray();
         if (!empty($shopIds)) {
             $this->shops = Shop::whereIn('id', $shopIds)->get();
@@ -148,7 +149,6 @@ class Create extends Component
         $clients->condition = $this->condition;
         $clients->product_price = $this->product_price;
         $clients->status = $this->status;
-        $clients->client_facebook = $this->client_facebook;
         $clients->created_at = $this->registration_date . ' ' . date("h:i:s");
         if ($clients->save()) {
             $create = new Application();
@@ -174,7 +174,6 @@ class Create extends Component
             $create->channel_id = $this->channel_id;
             $create->co_id = $this->co_id;
             $create->respond_by = $this->respond_by;
-            $create->client_facebook = $this->client_facebook;
             $create->created_by = Auth()->user()->username;
             $create->created_at = $this->registration_date . ' ' . date("h:i:s");
             if ($create->save()) {
@@ -263,10 +262,5 @@ class Create extends Component
     public function guarantorModal()
     {
         $this->dispatch('modal.guarantorModal');
-    }
-    // Show Social Media Field
-    public function mediaShow()
-    {
-        $this->facebook = !$this->facebook;
     }
 }

@@ -38,5 +38,6 @@ class UpdateOccupation extends Component
             'message' => __('Updated successfully')
         ]);
         $this->dispatch('modal.closeModalUpdate');
+        $this->dispatch('refresh_occupation');
     }
 }

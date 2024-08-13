@@ -7,10 +7,12 @@ use App\Models\Agency;
 use App\Models\Application;
 use App\Models\Channel;
 use App\Models\City;
+use App\Models\Client;
 use App\Models\CO;
 use App\Models\Commune;
 use App\Models\District;
 use App\Models\Loan_company;
+use App\Models\LoanCompany;
 use App\Models\Occupation;
 use App\Models\Product;
 use App\Models\Shop;
@@ -64,6 +66,7 @@ class Update extends Component
         'city_id' => 'required',
         'shop_id' => 'required',
         'channel_id' => 'required',
+        'co_id' => 'required',
 
     ];
     public function messages()
@@ -76,7 +79,9 @@ class Update extends Component
             'agency_id.required' => "The agency field is required.",
             "client_name_translate.required" => "The client name (khmer) field is required.",
             "shop_id.required" => "The Shop name field is required.",
-            'channel_id.required' => "The channel field is required."
+            'channel_id.required' => "The channel field is required.",
+            'co_id.required' => "The co field is required.",
+
         ];
     }
     public function selectMFI($type, $value)
@@ -112,7 +117,6 @@ class Update extends Component
         $this->mfi_id = $application->loan_company_id;
         $this->co_id = $application->co_id;
         $this->condition = $application->condition;
-        $this->client_facebook = $application->client_facebook;
         $this->registration_date = $application->created_at->format('Y-m-d');
         if ($application->address) {
             $this->address = Address::where('application_id', $this->application_id)->first();
@@ -165,9 +169,23 @@ class Update extends Component
         $app->co_id = $this->co_id;
         $app->income = $this->income;
         $app->condition = $this->condition;
-        $app->client_facebook = $this->client_facebook;
         $app->updated_by = Auth()->user()->username;
         if ($app->save()) {
+            $client = Client::find($app->client_id);
+            $client->client_name = $this->client_name;
+            $client->client_name_translate = $this->client_name_translate;
+            $client->gender = $this->gender;
+            $client->phone = $this->phone;
+            $client->khmer_identity_card = $this->khmer_identity_card;
+            $client->occupation_id = $this->occupation_id;
+            $client->income = $this->income;
+            $client->product_id = $this->product_id;
+            $client->product_name = $this->product_name;
+            $client->condition = $this->condition;
+            $client->product_price = $this->product_price;
+            $client->status = $this->status;
+        }
+        if ($client->save()) {
             if ($app->address) {
                 $address = Address::find($app->address->id);
                 $address->city_id = $this->city_id;
@@ -259,7 +277,7 @@ class Update extends Component
         $this->occupation = Occupation::all();
         $this->product = Product::all();
         $this->channels = Channel::all();
-        $this->mfi = Loan_company::all();
+        $this->mfi = LoanCompany::all();
         return view('livewire.sales.applications.update');
     }
 }
